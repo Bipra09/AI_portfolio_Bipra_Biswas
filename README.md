@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<< HEAD
 # 🚀 Friday AI - Fullstack Developer Portfolio with AI Integration
 
 A modern, responsive portfolio website featuring AI-powered chat capabilities, built with cutting-edge technologies.
@@ -168,9 +168,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/friday-ai/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/friday-ai/discussions)
-- **Email**: your.email@example.com
+- **Email**: biprobiswas15@gmail.com
 
 ---
 
@@ -179,5 +178,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 *Fullstack Developer & AI Enthusiast*
 =======
 # AI_Portfolio
-final Friday
+Friday
 >>>>>>> 54c1ebc9f3ee17437b64851b2ed9c0e31cfcadcb
