@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Hover Effects Test - Friday AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(20px);
+        }
+        
+        h1 {
+            color: #00ff88;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        .description {
+            color: #ccc;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .button-demo {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .demo-section {
+            margin-bottom: 50px;
+        }
+        
+        .demo-section h3 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .feature-list {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        
+        .feature-list strong {
+            color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🌟 Special Hover Effects Demo</h1>
+        <p class="description">
+            Test the enhanced hover effects for the Resume, Translate, and Light Mode buttons!
+        </p>
+        
+        <div class="demo-section">
+            <h3>🎯 Interactive Buttons</h3>
+            <div class="button-demo">
+                <!-- Resume Button -->
+                <button id="resume-dropdown" class="btn btn-secondary dropdown-toggle">
+                    <i class="fas fa-download"></i> Resume
+                </button>
+                
+                <!-- Language Toggle -->
+                <button id="language-toggle" class="btn btn-secondary">
+                    <i class="fas fa-language"></i> 🌐 EN
+                </button>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="btn btn-secondary">
+                    🌙 <span data-translate="toggle-theme">Light Mode</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>✨ Special Effects Added</h3>
+            <div class="feature-list">
+                <ul>
+                    <li><strong>Resume Button:</strong> Shimmer effect, download bounce animation, enhanced glow</li>
+                    <li><strong>Language Toggle:</strong> Expanding circle effect, spinning globe icon, magnetic hover</li>
+                    <li><strong>Theme Toggle:</strong> Sliding light effect, pulsing moon emoji, enhanced shadows</li>
+                    <li><strong>All Buttons:</strong> Scale transform, enhanced shadows, smooth transitions</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎨 Hover Instructions</h3>
+            <p class="description">
+                Hover over each button to see the special effects in action! 
+                Each button has unique animations and visual enhancements.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity for demo purposes
+        document.getElementById('resume-dropdown').addEventListener('click', function() {
+            alert('🎯 Resume button clicked! Notice the enhanced hover effects.');
+        });
+        
+        document.getElementById('language-toggle').addEventListener('click', function() {
+            const btn = this;
+            const icon = btn.querySelector('i');
+            icon.style.animation = 'languageSpin 0.8s ease';
+            setTimeout(() => {
+                icon.style.animation = '';
+            }, 800);
+            alert('🌐 Language toggle clicked! Check out the spinning animation.');
+        });
+        
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            const btn = this;
+            const span = btn.querySelector('span');
+            span.style.animation = 'themePulse 0.8s ease';
+            setTimeout(() => {
+                span.style.animation = '';
+            }, 800);
+            alert('🌙 Theme toggle clicked! See the pulsing effect.');
+        });
+    </script>
+</body>
+</html>

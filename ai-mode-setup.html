@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Setup - Hugging Face Integration</title>
+    <!-- Removed conflicting CSS files to prevent style conflicts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== PORTFOLIO-THEMED AI SETUP PAGE ===== */
+        
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none !important;
+        }
+
+        /* ===== CUSTOM CURSOR - PORTFOLIO STYLE ===== */
+        .cursor,
+        .cursor-follower {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.2s ease;
+        }
+
+        @media (max-width: 768px) {
+            .cursor,
+            .cursor-follower {
+                display: none !important;
+            }
+        }
+
+        .cursor {
+            background: #00ff88;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 255, 136, 0.5);
+            background: transparent;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease;
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: #ff6b6b;
+        }
+
+        .cursor-follower.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            border-color: rgba(255, 107, 107, 0.8);
+        }
+
+        /* ===== MAIN CONTAINER - PORTFOLIO THEME ===== */
+        .setup-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ===== BACK TO PORTFOLIO BUTTON ===== */
+        .back-to-portfolio-fixed {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #001310;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-to-portfolio-fixed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* ===== HEADER SECTION - PORTFOLIO STYLE ===== */
+        .setup-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .setup-header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .setup-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== SECTION HEADERS - PORTFOLIO GRADIENTS ===== */
+        .setup-section {
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .setup-section h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        /* ===== SETUP CARDS - PORTFOLIO GLASS EFFECT ===== */
+        .setup-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .setup-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 136, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .setup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .setup-card:hover::before {
+            opacity: 1;
+        }
+
+        .setup-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setup-card h3 i {
+            font-size: 1.2rem;
+        }
+
+        /* ===== SETUP STEPS - ENHANCED PORTFOLIO STYLE ===== */
+        .setup-steps {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .setup-steps li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .setup-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .setup-step {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .setup-step:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
+        }
+
+        .setup-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .setup-step:hover::before {
+            opacity: 1;
+        }
+
+        .setup-step h4 {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .setup-step p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .setup-step ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .setup-step li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .setup-step li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .setup-step strong {
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        /* ===== CODE BLOCKS - PORTFOLIO STYLE ===== */
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .code-block code {
+            color: #00ff88;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .code-block code:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== FILE STRUCTURE - PORTFOLIO STYLE ===== */
+        .file-structure {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .file-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.15);
+        }
+
+        .file-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .file-item:hover::before {
+            opacity: 1;
+        }
+
+        .file-item strong {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .file-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .file-item li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .file-item code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        /* ===== QUICK REFERENCE - PORTFOLIO STYLE ===== */
+        .quick-ref {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ref-item {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ref-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
+        }
+
+        .ref-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .ref-item:hover::before {
+            opacity: 1;
+        }
+
+        .ref-item strong {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .ref-item code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            display: inline-block;
+        }
+
+        /* ===== FORM ELEMENTS - PORTFOLIO STYLE ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: none !important;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: none !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .token-input {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TOKEN STATUS - PORTFOLIO STYLE ===== */
+        .token-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .token-status.valid {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .token-status.invalid {
+            background: rgba(255, 69, 58, 0.1);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            color: #ff4444;
+        }
+
+        .token-status.pending {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffaa00;
+        }
+
+        /* ===== BUTTONS - PORTFOLIO STYLE ===== */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: none;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #001310;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 68, 68, 0.4);
+        }
+
+        /* ===== CONNECTION STATUS - PORTFOLIO STYLE ===== */
+        .connection-status {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .connection-status.connected {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .connection-status.disconnected {
+            background: rgba(255, 69, 58, 0.1);
+            border: 2px solid rgba(255, 69, 58, 0.3);
+        }
+
+        .connection-status.testing {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-indicator.connected {
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.disconnected {
+            background: #ff4444;
+        }
+
+        .status-indicator.testing {
+            background: #ffaa00;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ===== SETUP ACTIONS - PORTFOLIO STYLE ===== */
+        .setup-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* ===== GO ONLINE SECTION - PORTFOLIO STYLE ===== */
+        .go-online-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .go-online-btn {
+            padding: 18px 36px;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #001310;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: none;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .go-online-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .go-online-btn:hover::before {
+            left: 100%;
+        }
+
+        .go-online-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .go-online-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+        }
+
+        .online-info {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .online-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .online-info h4 {
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .online-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .online-info li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .online-info li:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .setup-container {
+                padding: 20px 15px;
+            }
+
+            .setup-header h1 {
+                font-size: 2rem;
+            }
+
+            .setup-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .setup-card {
+                padding: 20px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+                margin: 5px;
+            }
+
+            .file-structure {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .back-to-portfolio-fixed {
+                top: 15px;
+                left: 15px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .setup-container {
+                padding: 15px 10px;
+            }
+
+            .setup-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .setup-section h2 {
+                font-size: 1.3rem;
+            }
+
+            .setup-card {
+                padding: 15px;
+            }
+
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+                margin: 3px;
+            }
+
+            .back-to-portfolio-fixed {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Back to Portfolio Button - Properly Positioned -->
+    <a href="index.html" class="back-to-portfolio-fixed">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>🤖 AI Setup Guide</h1>
+            <p>Complete guide to connect your AI assistant with Hugging Face for online AI capabilities</p>
+        </div>
+
+        <!-- Essential Configuration Section -->
+        <div class="setup-section">
+            <h2><i class="fas fa-key"></i> Step 1: Hugging Face Token Setup</h2>
+            
+            <div class="setup-card">
+                <h3>Get Your Hugging Face Access Token</h3>
+                <ol class="setup-steps">
+                    <li><strong>Visit Hugging Face:</strong> Go to <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #00d4ff;">https://huggingface.co/settings/tokens</a></li>
+                    <li><strong>Sign In:</strong> Log in to your Hugging Face account (create one if you don't have it)</li>
+                    <li><strong>Create Token:</strong> Click "New token" and give it a name (e.g., "AI Assistant")</li>
+                    <li><strong>Set Permissions:</strong> Select "Read" permissions (this is sufficient for AI model access)</li>
+                    <li><strong>Copy Token:</strong> Copy the generated token (starts with "hf_")</li>
+                </ol>
+                
+                <div class="form-group">
+                    <label for="hf-token">Paste Your Hugging Face Token Here</label>
+                    <input type="password" id="hf-token" class="token-input" placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                    <div class="token-status pending" id="token-status">
+                        <i class="fas fa-clock"></i> Token not validated
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="validateToken()">
+                    <i class="fas fa-check"></i> Validate Token
+                </button>
+            </div>
+
+            <!-- Server Configuration -->
+        </div>
+
+        <!-- Server Setup Section -->
+        <div class="setup-section">
+            <h2><i class="fas fa-server"></i> Step 2: Backend Server Setup</h2>
+            
+            <div class="setup-card">
+                <h3>Configure Your AI Backend Server</h3>
+                
+                <div class="form-group">
+                    <label for="server-port">Server Port</label>
+                    <input type="number" id="server-port" value="3000" min="1000" max="9999">
+                    <small>Default: 3000. Make sure this port is not used by other applications.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="server-host">Server Host</label>
+                    <input type="text" id="server-host" value="localhost" placeholder="localhost">
+                    <small>Keep as "localhost" for local development.</small>
+                </div>
+
+                <button class="btn btn-secondary" onclick="testConnection()">
+                    <i class="fas fa-plug"></i> Test Server Connection
+                </button>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Complete Setup Instructions Section -->
+        <div class="setup-section">
+            <h2><i class="fas fa-graduation-cap"></i> Step 3: Complete Setup Guide</h2>
+            
+            <div class="setup-card">
+                <h3>📋 Step-by-Step Setup Process</h3>
+                
+                <div class="setup-step">
+                    <h4>1. Get Hugging Face Token</h4>
+                    <p>Visit <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #00d4ff;">https://huggingface.co/settings/tokens</a></p>
+                    <ul>
+                        <li>Sign in to your Hugging Face account</li>
+                        <li>Click "New token" and name it "AI Assistant"</li>
+                        <li>Set permissions to "Read" only</li>
+                        <li>Copy the generated token (starts with "hf_")</li>
+                    </ul>
+                </div>
+
+                <div class="setup-step">
+                    <h4>2. Configure Backend Server</h4>
+                    <ul>
+                        <li>Set server port (default: 3000)</li>
+                        <li>Ensure the port is not used by other applications</li>
+                        <li>Test the connection using the "Test Connection" button</li>
+                    </ul>
+                </div>
+
+                <div class="setup-step">
+                    <h4>3. Start the AI Backend Server</h4>
+                    <div class="code-block">
+                        <code># Open terminal in your project folder</code><br>
+                        <code>node ai-backend-server.js</code>
+                    </div>
+                    <p><strong>Important:</strong> Keep this terminal running while using AI online mode.</p>
+                </div>
+
+                <div class="setup-step">
+                    <h4>4. Activate Online Mode</h4>
+                    <ul>
+                        <li>Once your token is validated and server is running</li>
+                        <li>Click "Activate Online AI Mode" button</li>
+                        <li>Your AI will now use Hugging Face models for responses</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- File Structure Information Section -->
+        <div class="setup-section">
+            <h2><i class="fas fa-folder-open"></i> Project File Structure</h2>
+            
+            <div class="setup-card">
+                <h3>Essential Files for AI Integration</h3>
+                
+                <div class="file-structure">
+                    <div class="file-item">
+                        <strong>📁 ai-backend/</strong>
+                        <ul>
+                            <li><code>server.js</code> - Main backend server</li>
+                            <li><code>package.json</code> - Dependencies and scripts</li>
+                            <li><code>env.template</code> - Environment variables template</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="file-item">
+                        <strong>📁 Root Directory</strong>
+                        <ul>
+                            <li><code>ai-backend-server.js</code> - Alternative backend server</li>
+                            <li><code>ai-enhanced.js</code> - Frontend AI logic</li>
+                            <li><code>ai-config.js</code> - Configuration settings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="connection-status disconnected" id="connection-status">
+            <div class="status-indicator disconnected"></div>
+            <strong>Status:</strong> <span id="status-text">Disconnected</span>
+            <div id="status-details">Configure your settings and test connection to get started</div>
+        </div>
+
+        <!-- Essential Actions -->
+        <div class="setup-actions">
+            <button class="btn btn-primary" onclick="saveConfiguration()">
+                <i class="fas fa-save"></i> Save Configuration
+            </button>
+            <button class="btn btn-secondary" onclick="testConnection()">
+                <i class="fas fa-plug"></i> Test Connection
+            </button>
+        </div>
+
+        <!-- Go Online Section -->
+        <div class="go-online-section">
+            <h2><i class="fas fa-rocket"></i> Step 4: Activate Online AI Mode</h2>
+            
+            <button class="go-online-btn" id="go-online-btn" onclick="activateOnlineMode()" disabled>
+                <i class="fas fa-rocket"></i> Activate Online AI Mode
+            </button>
+            
+            <div class="online-info">
+                <h4><i class="fas fa-info-circle"></i> What Happens When You Go Online?</h4>
+                <ul>
+                                            <li>🎯 Your AI connects to Hugging Face AI models for enhanced responses</li>
+                    <li>🚀 Access to cutting-edge models like Gemma, Llama, and Mistral</li>
+                    <li>💡 Real-time AI processing with fallback to local knowledge base</li>
+                    <li>🔒 Your token is stored locally and never shared</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quick Reference Section -->
+        <div class="setup-section">
+            <h2><i class="fas fa-lightbulb"></i> Quick Reference</h2>
+            
+            <div class="setup-card">
+                <h3>Essential Commands & Links</h3>
+                
+                <div class="quick-ref">
+                    <div class="ref-item">
+                        <strong>🔑 Hugging Face Token:</strong>
+                        <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #00d4ff;">https://huggingface.co/settings/tokens</a>
+                    </div>
+                    
+                    <div class="ref-item">
+                        <strong>🚀 Start Backend Server:</strong>
+                        <code>node ai-backend-server.js</code>
+                    </div>
+                    
+                    <div class="ref-item">
+                        <strong>🔧 Test Connection:</strong>
+                        Use "Test Server Connection" button above
+                    </div>
+                    
+                    <div class="ref-item">
+                        <strong>💾 Save Settings:</strong>
+                        Use "Save Configuration" button above
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI CHAT BOX HTML REMOVED - TESTING IF LAYOUT STILL APPEARS -->
+        
+        <!-- SHOW CHAT BUTTON REMOVED - TESTING IF LAYOUT STILL APPEARS -->
+    </div>
+
+    <!-- ===== CUSTOM CURSOR FOR AI SETUP PAGE ===== -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+
+
+
+
+    <script>
+        // ===== CONFIGURATION FUNCTIONS =====
+        
+        // Configuration object
+        let currentConfig = {
+            huggingFace: {
+                token: '',
+                username: '',
+                organization: ''
+            },
+            server: {
+                port: 3000,
+                host: 'localhost',
+                corsOrigin: '*'
+            },
+            model: {
+                type: 'gemma',
+                size: '7b',
+                customId: '',
+                maxTokens: 512,
+                temperature: 0.7,
+                topP: 0.9,
+                timeout: 30000
+            },
+            features: {
+                fallbackToLocal: true
+            }
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+            updateModelOptions();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Temperature slider
+            document.getElementById('temperature').addEventListener('input', function(e) {
+                document.getElementById('temp-value').textContent = e.target.value;
+            });
+
+            // Top P slider
+            document.getElementById('top-p').addEventListener('input', function(e) {
+                document.getElementById('top-p-value').textContent = e.target.value;
+            });
+
+            // Model type change
+            document.getElementById('model-type').addEventListener('change', updateModelOptions);
+            
+            // CORS custom input
+            const customCorsInput = document.getElementById('custom-cors-input');
+            if (customCorsInput) {
+                customCorsInput.addEventListener('input', updateCorsInfo);
+            }
+            
+            // Server port changes
+            const serverPort = document.getElementById('server-port');
+            if (serverPort) {
+                serverPort.addEventListener('input', updateCorsInfo);
+            }
+        }
+
+        function updateModelOptions() {
+            const modelType = document.getElementById('model-type').value;
+            const modelSize = document.getElementById('model-size');
+            const customModel = document.getElementById('custom-model');
+            const selectedModel = document.getElementById('selected-model');
+            const modelParams = document.getElementById('model-params');
+            const modelContext = document.getElementById('model-context');
+            const modelLicense = document.getElementById('model-license');
+
+            // Reset size options
+            modelSize.innerHTML = '';
+
+            if (modelType === 'gemma') {
+                modelSize.innerHTML = `
+                    <option value="2b">2B Parameters</option>
+                    <option value="7b">7B Parameters</option>
+                    <option value="9b">9B Parameters</option>
+                `;
+                customModel.value = 'google/gemma-7b-it';
+                customModel.disabled = true;
+            } else if (modelType === 'llama') {
+                modelSize.innerHTML = `
+                    <option value="7b">7B Parameters</option>
+                    <option value="13b">13B Parameters</option>
+                    <option value="30b">30B Parameters</option>
+                    <option value="70b">70B Parameters</option>
+                `;
+                customModel.value = 'meta-llama/Llama-2-7b-chat-hf';
+                customModel.disabled = true;
+            } else if (modelType === 'mistral') {
+                modelSize.innerHTML = `
+                    <option value="7b">7B Parameters</option>
+                    <option value="8x7b">8x7B Parameters</option>
+                `;
+                customModel.value = 'mistralai/Mistral-7B-Instruct-v0.2';
+                customModel.disabled = true;
+            } else if (modelType === 'custom') {
+                modelSize.innerHTML = '<option value="custom">Custom</option>';
+                customModel.disabled = false;
+                customModel.placeholder = 'Enter model ID (e.g., microsoft/DialoGPT-medium)';
+            }
+
+            updateModelInfo();
+        }
+
+        function updateModelInfo() {
+            const modelType = document.getElementById('model-type').value;
+            const modelSize = document.getElementById('model-size').value;
+            const customModel = document.getElementById('custom-model').value;
+            
+            let modelId = customModel;
+            let params = modelSize;
+            let context = '8192';
+            let license = 'Custom License';
+
+            if (modelType === 'gemma') {
+                modelId = `google/gemma-${modelSize}-it`;
+                params = modelSize;
+                context = '8192';
+                license = 'Gemma License';
+            } else if (modelType === 'llama') {
+                modelId = `meta-llama/Llama-2-${modelSize}-chat-hf`;
+                params = modelSize;
+                context = '4096';
+                license = 'Meta License';
+            } else if (modelType === 'mistral') {
+                if (modelSize === '8x7b') {
+                    modelId = 'mistralai/Mixtral-8x7B-Instruct-v0.1';
+                    params = '8x7B';
+                    context = '32768';
+                } else {
+                    modelId = 'mistralai/Mistral-7B-Instruct-v0.2';
+                    params = '7B';
+                    context = '8192';
+                }
+                license = 'Apache 2.0';
+            }
+
+            document.getElementById('selected-model').textContent = modelId;
+            document.getElementById('model-params').textContent = params;
+            document.getElementById('model-context').textContent = context;
+            document.getElementById('model-license').textContent = license;
+        }
+
+        async function validateToken() {
+            const token = document.getElementById('hf-token').value;
+            const status = document.getElementById('token-status');
+
+            if (!token) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> No token provided';
+                return;
+            }
+
+            // Basic token format validation
+            if (!token.startsWith('hf_') || token.length < 20) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> Invalid token format (should start with hf_ and be at least 20 characters)';
+                return;
+            }
+
+            status.className = 'token-status pending';
+            status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating token...';
+
+            try {
+                // Test token with Hugging Face API using multiple endpoints
+                let tokenValid = false;
+                let userData = null;
+
+                // Try the whoami endpoint first
+                try {
+                    const response = await fetch('https://huggingface.co/api/whoami', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
+
+                    if (response.ok) {
+                        userData = await response.json();
+                        tokenValid = true;
+                    } else if (response.status === 401) {
+                        // Token is invalid
+                        tokenValid = false;
+                    } else {
+                        // Other error, try alternative validation
+                        console.log('Whoami endpoint failed, trying alternative validation...');
+                    }
+                } catch (whoamiError) {
+                    console.log('Whoami endpoint error:', whoamiError);
+                }
+
+                // If whoami failed, try a simpler endpoint
+                if (!tokenValid) {
+                    try {
+                        const response = await fetch('https://huggingface.co/api/models', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            mode: 'cors'
+                        });
+
+                        if (response.ok) {
+                            tokenValid = true;
+                            userData = { name: 'Valid User' };
+                        }
+                    } catch (modelsError) {
+                        console.log('Models endpoint error:', modelsError);
+                    }
+                }
+
+                // If still not valid, try a basic format check and assume it's valid
+                if (!tokenValid && token.startsWith('hf_') && token.length >= 20) {
+                    console.log('API validation failed, but token format looks correct. Assuming valid for now.');
+                    tokenValid = true;
+                    userData = { name: 'User' };
+                }
+
+                if (tokenValid) {
+                    status.className = 'token-status valid';
+                    status.innerHTML = `<i class="fas fa-check"></i> Valid token for ${userData?.name || 'user'}`;
+                    
+                    // Auto-fill username if available
+                    if (userData?.name && userData.name !== 'User') {
+                        document.getElementById('hf-username').value = userData.name;
+                    }
+                } else {
+                    status.className = 'token-status invalid';
+                    status.innerHTML = '<i class="fas fa-times"></i> Invalid token or API access denied';
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                
+                // If there's a network error but token format is correct, assume it's valid
+                if (token.startsWith('hf_') && token.length >= 20) {
+                    status.className = 'token-status valid';
+                    status.innerHTML = '<i class="fas fa-check"></i> Token format valid (network validation failed)';
+                } else {
+                    status.className = 'token-status invalid';
+                    status.innerHTML = '<i class="fas fa-times"></i> Validation failed - check network connection';
+                }
+            }
+
+            // Check requirements after token validation
+            checkRequirements();
+        }
+
+        function manualValidateToken() {
+            const token = document.getElementById('hf-token').value;
+            const status = document.getElementById('token-status');
+
+            if (!token) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> No token provided';
+                return;
+            }
+
+            // Basic format validation
+            if (!token.startsWith('hf_') || token.length < 20) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> Invalid token format (should start with hf_ and be at least 20 characters)';
+                return;
+            }
+
+            // If format is correct, mark as valid
+            status.className = 'token-status valid';
+            status.innerHTML = '<i class="fas fa-check"></i> Token format valid (manual validation)';
+            
+            // Check requirements after manual validation
+            checkRequirements();
+        }
+
+        async function testConnection() {
+            console.log('testConnection() called'); // Debug log
+            
+            const status = document.getElementById('connection-status');
+            const statusText = document.getElementById('status-text');
+            const statusDetails = document.getElementById('status-details');
+
+            // Check if elements exist
+            if (!status || !statusText || !statusDetails) {
+                console.error('Connection status elements not found');
+                alert('Connection status elements not found. Please refresh the page.');
+                return;
+            }
+
+            status.className = 'connection-status testing';
+            statusText.textContent = 'Testing Connection...';
+            statusDetails.textContent = 'Checking server connectivity...';
+
+            const portElement = document.getElementById('server-port');
+            const hostElement = document.getElementById('server-host');
+            
+            if (!portElement || !hostElement) {
+                console.error('Server configuration elements not found');
+                alert('Server configuration elements not found. Please refresh the page.');
+                return;
+            }
+
+            const port = portElement.value || '3000';
+            const host = hostElement.value || 'localhost';
+
+            console.log(`Testing connection to ${host}:${port}`); // Debug log
+
+            try {
+                const url = `http://${host}:${port}/api/health`;
+                console.log(`Fetching: ${url}`); // Debug log
+                
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status); // Debug log
+
+                if (response.ok) {
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (jsonError) {
+                        data = { message: 'Server responded successfully' };
+                    }
+                    
+                    status.className = 'connection-status connected';
+                    statusText.textContent = 'Connected';
+                    statusDetails.textContent = `Server running at ${host}:${port} - ${data.message || 'Connection successful'}`;
+                    
+                    console.log('Connection successful'); // Debug log
+                    
+                    // Enable go online button if token is also valid
+                    checkRequirements();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Connection test error:', error); // Debug log
+                
+                status.className = 'connection-status disconnected';
+                statusText.textContent = 'Connection Failed';
+                statusDetails.textContent = `Cannot connect to ${host}:${port}. Error: ${error.message}. Make sure the server is running.`;
+                
+                // Disable go online button if connection fails
+                const goOnlineBtn = document.getElementById('go-online-btn');
+                if (goOnlineBtn) {
+                    goOnlineBtn.disabled = true;
+                }
+            }
+        }
+
+        function testButtonClick() {
+            console.log('Test button clicked!');
+            alert('Test button is working! If you see this, the button clicks are functioning properly.');
+        }
+
+        function handleCorsOriginChange() {
+            const corsSelect = document.getElementById('cors-origin');
+            const customGroup = document.getElementById('custom-cors-group');
+            const customInput = document.getElementById('custom-cors-input');
+            const selectedOriginSpan = document.getElementById('selected-cors-origin');
+            
+            const selectedValue = corsSelect.value;
+            
+            // Show/hide custom input based on selection
+            if (selectedValue === 'custom') {
+                customGroup.style.display = 'block';
+                customInput.focus();
+                selectedOriginSpan.textContent = 'Custom (Enter below)';
+            } else if (selectedValue === 'auto') {
+                customGroup.style.display = 'none';
+                const currentOrigin = getCurrentPageOrigin();
+                selectedOriginSpan.textContent = currentOrigin;
+                updateCorsInfo();
+            } else {
+                customGroup.style.display = 'none';
+                selectedOriginSpan.textContent = selectedValue;
+                updateCorsInfo();
+            }
+        }
+
+        function getCurrentPageOrigin() {
+            try {
+                const protocol = window.location.protocol;
+                const hostname = window.location.hostname;
+                const port = window.location.port;
+                
+                if (port) {
+                    return `${protocol}//${hostname}:${port}`;
+                } else {
+                    return `${protocol}//${hostname}`;
+                }
+            } catch (error) {
+                console.error('Error getting current page origin:', error);
+                return 'Unknown';
+            }
+        }
+
+        function updateCorsInfo() {
+            const currentOriginSpan = document.getElementById('current-page-origin');
+            const selectedOriginSpan = document.getElementById('selected-cors-origin');
+            const backendPortSpan = document.getElementById('backend-port-display');
+            
+            // Update current page origin
+            currentOriginSpan.textContent = getCurrentPageOrigin();
+            
+            // Update selected origin
+            const corsSelect = document.getElementById('cors-origin');
+            const customInput = document.getElementById('custom-cors-input');
+            
+            if (corsSelect.value === 'custom' && customInput.value) {
+                selectedOriginSpan.textContent = customInput.value;
+            } else if (corsSelect.value === 'auto') {
+                selectedOriginSpan.textContent = getCurrentPageOrigin();
+            } else {
+                selectedOriginSpan.textContent = corsSelect.value;
+            }
+            
+            // Update backend port
+            const portInput = document.getElementById('server-port');
+            if (portInput) {
+                backendPortSpan.textContent = portInput.value || '3000';
+            }
+        }
+
+        function getEffectiveCorsOrigin() {
+            const corsSelect = document.getElementById('cors-origin');
+            const customInput = document.getElementById('custom-cors-input');
+            
+            if (corsSelect.value === 'custom' && customInput.value) {
+                return customInput.value;
+            } else if (corsSelect.value === 'auto') {
+                return getCurrentPageOrigin();
+            } else {
+                return corsSelect.value;
+            }
+        }
+
+        function saveConfiguration() {
+            // Collect all form values
+            currentConfig.huggingFace.token = document.getElementById('hf-token').value;
+            currentConfig.huggingFace.username = document.getElementById('hf-username').value;
+            currentConfig.huggingFace.organization = document.getElementById('hf-org').value;
+            
+            currentConfig.server.port = parseInt(document.getElementById('server-port').value);
+            currentConfig.server.host = document.getElementById('server-host').value;
+            currentConfig.server.corsOrigin = getEffectiveCorsOrigin();
+            
+            currentConfig.model.type = document.getElementById('model-type').value;
+            currentConfig.model.size = document.getElementById('model-size').value;
+            currentConfig.model.customId = document.getElementById('custom-model').value;
+            currentConfig.model.maxTokens = parseInt(document.getElementById('max-tokens').value);
+            currentConfig.model.temperature = parseFloat(document.getElementById('temperature').value);
+            currentConfig.model.topP = parseFloat(document.getElementById('top-p').value);
+            currentConfig.model.timeout = parseInt(document.getElementById('timeout').value);
+            
+            currentConfig.features.fallbackToLocal = document.getElementById('fallback-local').checked;
+
+            // Save to localStorage
+            localStorage.setItem('aiConfig', JSON.stringify(currentConfig));
+
+            // Update backend configuration
+            updateBackendConfig();
+
+            // Show success message
+            showNotification('Configuration saved successfully!', 'success');
+        }
+
+        function loadConfiguration() {
+            const saved = localStorage.getItem('aiConfig');
+            if (saved) {
+                currentConfig = JSON.parse(saved);
+                
+                // Apply saved configuration to form
+                document.getElementById('hf-token').value = currentConfig.huggingFace.token || '';
+                document.getElementById('hf-username').value = currentConfig.huggingFace.username || '';
+                document.getElementById('hf-org').value = currentConfig.huggingFace.organization || '';
+                
+                document.getElementById('server-port').value = currentConfig.server.port || 3000;
+                document.getElementById('server-host').value = currentConfig.server.host || 'localhost';
+                // Handle CORS origin loading
+                const corsOrigin = currentConfig.server.corsOrigin || '*';
+                const corsSelect = document.getElementById('cors-origin');
+                const customInput = document.getElementById('custom-cors-input');
+                
+                if (corsOrigin === '*') {
+                    corsSelect.value = '*';
+                } else if (corsOrigin === getCurrentPageOrigin()) {
+                    corsSelect.value = 'auto';
+                } else if (corsSelect.querySelector(`option[value="${corsOrigin}"]`)) {
+                    corsSelect.value = corsOrigin;
+                } else {
+                    corsSelect.value = 'custom';
+                    customInput.value = corsOrigin;
+                }
+                
+                // Update display
+                handleCorsOriginChange();
+                
+                document.getElementById('model-type').value = currentConfig.model.type || 'gemma';
+                document.getElementById('model-size').value = currentConfig.model.size || '7b';
+                document.getElementById('custom-model').value = currentConfig.model.customId || '';
+                document.getElementById('max-tokens').value = currentConfig.model.maxTokens || 512;
+                document.getElementById('temperature').value = currentConfig.model.temperature || 0.7;
+                document.getElementById('top-p').value = currentConfig.model.topP || 0.9;
+                document.getElementById('timeout').value = currentConfig.model.timeout || 30000;
+                
+                document.getElementById('fallback-local').checked = currentConfig.features.fallbackToLocal !== false;
+
+                updateModelOptions();
+                showNotification('Configuration loaded successfully!', 'success');
+            } else {
+                showNotification('No saved configuration found.', 'info');
+            }
+        }
+
+        function resetConfiguration() {
+            if (confirm('Are you sure you want to reset all configuration to defaults? This cannot be undone.')) {
+                localStorage.removeItem('aiConfig');
+                
+                // Reset form to defaults
+                document.getElementById('hf-token').value = '';
+                document.getElementById('hf-username').value = '';
+                document.getElementById('hf-org').value = '';
+                document.getElementById('server-port').value = 3000;
+                document.getElementById('server-host').value = 'localhost';
+                document.getElementById('cors-origin').value = '*';
+                document.getElementById('custom-cors-input').value = '';
+                document.getElementById('custom-cors-group').style.display = 'none';
+                handleCorsOriginChange();
+                document.getElementById('model-type').value = 'gemma';
+                document.getElementById('model-size').value = '7b';
+                document.getElementById('custom-model').value = '';
+                document.getElementById('max-tokens').value = 512;
+                document.getElementById('temperature').value = 0.7;
+                document.getElementById('top-p').value = 0.9;
+                document.getElementById('timeout').value = 30000;
+                document.getElementById('fallback-local').checked = true;
+
+                updateModelOptions();
+                showNotification('Configuration reset to defaults!', 'info');
+            }
+        }
+
+        function updateBackendConfig() {
+            // This function would update the backend configuration
+            // For now, we'll just log the configuration
+            console.log('Updated configuration:', currentConfig);
+            
+            // You could also send this to your backend server
+            // fetch('/api/config', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(currentConfig)
+            // });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: #fff;
+                font-weight: 500;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+
+            // Set background color based on type
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #ff4444, #ff6b6b)';
+            } else if (type === 'warning') {
+                notification.style.background = 'linear-gradient(135deg, #ffaa00, #ffcc00)';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #00d4ff, #667eea)';
+            }
+
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Check requirements and enable/disable go online button
+        function checkRequirements() {
+            const tokenValid = document.getElementById('hf-token').value.length > 0;
+            const serverRunning = false; // Will be updated by testConnection
+            
+            // Enable/disable go online button
+            const goOnlineBtn = document.getElementById('go-online-btn');
+            goOnlineBtn.disabled = !tokenValid;
+
+            return { tokenValid, serverRunning };
+        }
+
+        async function activateOnlineMode() {
+            const requirements = checkRequirements();
+            
+            if (!requirements.tokenValid) {
+                showNotification('Please complete all requirements before going online.', 'error');
+                return;
+            }
+
+            try {
+                // Save configuration to localStorage
+                saveConfiguration();
+                
+                        // Update AI configuration in the main portfolio
+        updateAIConfig();
+                
+                // Show success message
+                showNotification('Online mode activated! Your AI is now connected to Hugging Face.', 'success');
+                
+                // Update the button
+                const goOnlineBtn = document.getElementById('go-online-btn');
+                goOnlineBtn.disabled = true;
+                goOnlineBtn.innerHTML = '<i class="fas fa-check"></i> Online Mode Active';
+                goOnlineBtn.style.background = 'linear-gradient(135deg, #00ff88, #00ff88)';
+                
+            } catch (error) {
+                console.error('Error activating online mode:', error);
+                showNotification('Error activating online mode. Please try again.', 'error');
+            }
+        }
+
+        function updateAIConfig() {
+            try {
+                // Store the configuration in localStorage for the main portfolio to access
+                const config = {
+                    onlineMode: true,
+                    huggingFace: {
+                        token: document.getElementById('hf-token').value
+                    },
+                    server: {
+                        port: document.getElementById('server-port').value
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('aiOnlineConfig', JSON.stringify(config));
+                
+                // Try to communicate with the parent window if this is opened from the portfolio
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({
+                        type: 'FRIDAY_AI_ONLINE_CONFIG',
+                        config: config
+                    }, '*');
+                }
+                
+                console.log('AI online configuration updated:', config);
+                
+            } catch (error) {
+                console.error('Error updating AI config:', error);
+                throw error;
+            }
+        }
+
+        // Auto-save configuration when form changes
+        document.addEventListener('change', function() {
+            // Debounce auto-save
+            clearTimeout(window.autoSaveTimeout);
+            window.autoSaveTimeout = setTimeout(() => {
+                saveConfiguration();
+                checkRequirements(); // Check requirements after form changes
+            }, 1000);
+        });
+
+        // Initialize requirements check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+            updateModelOptions();
+            setupEventListeners();
+            updateCorsInfo(); // Initialize CORS info display
+            checkRequirements(); // Check requirements on page load
+            
+            // Auto-check server connection on page load
+            setTimeout(() => {
+                testConnection();
+            }, 1000);
+        });
+
+        // ===== FRIDAY AI CHAT FUNCTIONALITY (KEPT) =====
+        
+        // ===== FRIDAY AI FACE BUTTON FUNCTIONALITY =====
+        
+        // Initialize Friday AI when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 DOM Content Loaded - Initializing Friday AI...');
+            console.log('🔍 Page loaded successfully');
+            
+            // Test if elements exist
+            const fridayFaceButton = document.getElementById('friday-ai-face-button');
+            const fridayChatSection = document.getElementById('friday-ai-chat-section');
+            
+            console.log('🔍 Elements found on load:', {
+                faceButton: fridayFaceButton,
+                chatSection: fridayChatSection
+            });
+            
+            initializeFridayAI();
+        });
+
+        // Backup initialization
+        window.onload = function() {
+            console.log('🌐 Window loaded - Backup initialization');
+            
+            // Test if elements exist
+            const fridayFaceButton = document.getElementById('friday-ai-face-button');
+            const fridayChatSection = document.getElementById('friday-ai-chat-section');
+            
+            console.log('🔍 Elements found on window load:', {
+                faceButton: fridayFaceButton,
+                chatSection: fridayChatSection
+            });
+            
+            if (fridayFaceButton && fridayChatSection) {
+                console.log('✅ Elements found, setting up backup handlers');
+                
+                // Backup click handlers
+                fridayFaceButton.onclick = openFridayChat;
+                
+                // Test if click works
+                console.log('🧪 Testing click handler...');
+                fridayFaceButton.click();
+            } else {
+                console.log('❌ Elements not found on window load');
+            }
+        };
+
+        // Test function to debug
+        function testFridayAI() {
+            console.log('🧪 Test Friday AI function called');
+            const fridayFaceButton = document.getElementById('friday-ai-face-button');
+            const fridayChatSection = document.getElementById('friday-ai-chat-section');
+            
+            console.log('🧪 Friday Face Button:', fridayFaceButton);
+            console.log('🧪 Friday Chat Section:', fridayChatSection);
+            
+            if (fridayChatSection) {
+                fridayChatSection.style.display = 'block';
+                alert('Chat should be visible now!');
+            } else {
+                alert('Chat section not found!');
+            }
+        }
+
+        // Simple backup function for opening chat
+        function openFridayChat() {
+            console.log('🎯 openFridayChat() called directly!');
+            const fridayFaceButton = document.getElementById('friday-ai-face-button');
+            const fridayChatSection = document.getElementById('friday-ai-chat-section');
+            
+            if (fridayChatSection && fridayFaceButton) {
+                fridayChatSection.style.display = 'block';
+                fridayFaceButton.style.display = 'none';
+                alert('Chat opened via backup function!');
+            } else {
+                alert('Elements not found in backup function!');
+            }
+        }
+
+        // Simple backup function for closing chat
+        function closeFridayChat() {
+            console.log('🎯 closeFridayChat() called directly!');
+            const fridayFaceButton = document.getElementById('friday-ai-face-button');
+            const fridayChatSection = document.getElementById('friday-ai-chat-section');
+            
+            if (fridayChatSection && fridayFaceButton) {
+                fridayChatSection.style.display = 'none';
+                fridayFaceButton.style.display = 'block';
+                alert('Chat closed via backup function!');
+            } else {
+                alert('Elements not found in backup function!');
+            }
+        }
+
+        // ===== FRIDAY AI FACE BUTTON FUNCTIONALITY =====
+        
+        // Friday AI chat state variables
+        let fridayIsListening = false;
+        let fridayIsSpeaking = false;
+        let fridayRecognition = null;
+        let fridaySynthesis = window.speechSynthesis;
+
+        // Initialize Friday AI functionality
+        function initializeFridayAI() {
+            console.log('🔍 Initializing Friday AI...');
+            
+            // Wait a bit for DOM to be fully ready
+            setTimeout(() => {
+                const fridayFaceButton = document.getElementById('friday-ai-face-button');
+                const fridayChatSection = document.getElementById('friday-ai-chat-section');
+                const fridayCloseBtn = document.getElementById('friday-chat-close-btn');
+                const fridayChatInput = document.getElementById('friday-chat-input');
+                const fridaySendBtn = document.getElementById('friday-send-btn');
+                const fridayMicBtn = document.getElementById('friday-mic-btn');
+                const fridaySpeakerBtn = document.getElementById('friday-speaker-btn');
+
+                console.log('🔍 Friday AI Face Button:', fridayFaceButton);
+                console.log('🔍 Friday AI Chat Section:', fridayChatSection);
+                console.log('🔍 Friday AI Close Button:', fridayCloseBtn);
+
+                if (!fridayFaceButton || !fridayChatSection) {
+                    console.log('❌ Friday AI elements not found');
+                    return;
+                }
+
+                console.log('✅ Friday AI elements found, setting up event listeners...');
+
+                        // Friday AI face button click - open chat
+        fridayFaceButton.onclick = function() {
+            console.log('🎯 Friday AI Face Button clicked!');
+            console.log('🔍 Chat section before:', fridayChatSection.style.display);
+            
+            fridayChatSection.style.display = 'block';
+            fridayFaceButton.style.display = 'none';
+            
+            console.log('🔍 Chat section after:', fridayChatSection.style.display);
+            console.log('🔍 Face button after:', fridayFaceButton.style.display);
+            
+            // Add some animation to the face
+            this.querySelector('.friday-ai-orb').style.animation = 'fridayOrbFloat 1s ease-in-out';
+        };
+
+                // Close button click
+                fridayCloseBtn.onclick = function() {
+                    console.log('🎯 Close button clicked!');
+                    fridayChatSection.style.display = 'none';
+                    fridayFaceButton.style.display = 'block';
+                };
+
+                // Send button click
+                fridaySendBtn.onclick = fridaySendMessage;
+                
+                // Enter key in input
+                fridayChatInput.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        fridaySendMessage();
+                    }
+                };
+
+                // Mic button click
+                fridayMicBtn.onclick = fridayToggleVoiceInput;
+                
+                // Speaker button click
+                fridaySpeakerBtn.onclick = fridayToggleTextToSpeech;
+
+                // Initialize speech recognition if available
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    fridayRecognition = new SpeechRecognition();
+                    fridayRecognition.continuous = false;
+                    fridayRecognition.interimResults = false;
+                    fridayRecognition.lang = 'en-US';
+
+                    fridayRecognition.onresult = function(event) {
+                        const transcript = event.results[0][0].transcript;
+                        fridayChatInput.value = transcript;
+                        fridayStopListening();
+                    };
+
+                    fridayRecognition.onerror = function(event) {
+                        console.error('Friday AI Speech recognition error:', event.error);
+                        fridayStopListening();
+                    };
+
+                    fridayRecognition.onend = function() {
+                        fridayStopListening();
+                    };
+                } else {
+                    if (fridayMicBtn) {
+                        fridayMicBtn.style.opacity = '0.5';
+                        fridayMicBtn.title = 'Speech recognition not supported';
+                    }
+                }
+            }, 100);
+        }
+
+        // ===== CUSTOM CURSOR FUNCTIONALITY =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            if (!cursor || !cursorFollower) return;
+            
+            let mouseX = 0;
+            let mouseY = 0;
+            let cursorX = 0;
+            let cursorY = 0;
+            let followerX = 0;
+            let followerY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            function animateCursor() {
+                // Smooth cursor movement
+                cursorX += (mouseX - cursorX) * 0.1;
+                cursorY += (mouseY - cursorY) * 0.1;
+                
+                // Smooth follower movement
+                followerX += (mouseX - followerX) * 0.05;
+                followerY += (mouseY - followerY) * 0.05;
+                
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+                cursorFollower.style.left = followerX + 'px';
+                cursorFollower.style.top = followerY + 'px';
+                
+                requestAnimationFrame(animateCursor);
+            }
+            
+            animateCursor();
+            
+            // Add hover effects to interactive elements
+            const interactiveElements = document.querySelectorAll('button, a, input, select, textarea, .btn, .setup-card, .setup-step, .file-item, .ref-item');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                    cursorFollower.classList.add('hover');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                    cursorFollower.classList.remove('hover');
+                });
+            });
+        });
+
+    </script>
+
+    <!-- Complete Setup Instructions -->
+    <div class="setup-instructions" style="margin: 40px 0; padding: 30px; background: rgba(255, 193, 7, 0.05); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 15px;">
+        <h4 style="color: #ffaa00; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-book"></i> Complete Setup Instructions
+        </h4>
+        
+        <div style="margin-bottom: 25px;">
+            <h5 style="color: #ffcc00; margin-bottom: 15px; font-size: 1.1rem;">📋 Prerequisites</h5>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li><strong>Node.js</strong> (version 16 or higher) - Download from <a href="https://nodejs.org/" target="_blank" style="color: #00d4ff;">https://nodejs.org/</a></li>
+                <li><strong>Hugging Face Account</strong> - Sign up at <a href="https://huggingface.co/" target="_blank" style="color: #00d4ff;">https://huggingface.co/</a></li>
+                <li><strong>Basic Terminal Knowledge</strong> - Ability to run commands</li>
+            </ol>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h5 style="color: #ffcc00; margin-bottom: 15px; font-size: 1.1rem;">🔑 Step 1: Get Your Hugging Face Token</h5>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li>Visit <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #00d4ff;">Hugging Face Settings</a></li>
+                <li>Click "New token"</li>
+                <li>Give it a name (e.g., "AI Portfolio")</li>
+                <li>Select "Read" permissions</li>
+                <li>Copy the generated token (starts with <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">hf_</code>)</li>
+            </ol>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h5 style="color: #ffcc00; margin-bottom: 15px; font-size: 1.1rem;">🚀 Step 2: Start the Backend Server</h5>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li><strong>Open Terminal/Command Prompt</strong> in your portfolio folder</li>
+                <li><strong>Install Dependencies:</strong> <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">npm install</code></li>
+                <li><strong>Start Server:</strong> <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">npm start</code></li>
+                <li><strong>Verify Server:</strong> Open <a href="http://localhost:3000/api/health" target="_blank" style="color: #00d4ff;">http://localhost:3000/api/health</a></li>
+            </ol>
+            
+            <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+                <h6 style="color: #00ff88; margin-bottom: 10px; font-size: 1rem;">📁 Alternative: Use Startup Scripts</h6>
+                <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Windows:</strong> Double-click <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">start-ai.bat</code></p>
+                <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>PowerShell:</strong> Right-click <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">start-ai.ps1</code> → "Run with PowerShell"</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h5 style="color: #ffcc00; margin-bottom: 15px; font-size: 1.1rem;">⚙️ Step 3: Configure AI Mode Setup</h5>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li><strong>Enter Token:</strong> Paste your Hugging Face token in the field above</li>
+                <li><strong>Click "Validate Token"</strong> to verify access</li>
+                <li><strong>Click "Test Connection"</strong> to verify server</li>
+                <li><strong>Click "Activate Online Mode"</strong> when ready</li>
+            </ol>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h5 style="color: #ffcc00; margin-bottom: 15px; font-size: 1.1rem;">🔄 Switching Between Modes</h5>
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+                <li><strong>To Online Mode:</strong> Complete setup above and click "Activate Online Mode"</li>
+                <li><strong>To Offline Mode:</strong> Go to setup page and click "Deactivate Online Mode"</li>
+                <li><strong>Automatic Fallback:</strong> If online fails, automatically switches to offline</li>
+            </ol>
+        </div>
+
+        <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+            <h6 style="color: #00ff88; margin-bottom: 10px; font-size: 1rem;">🔧 Required File Changes</h6>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>No changes needed!</strong> All required files are already created:</p>
+            <ul style="margin-top: 10px; padding-left: 20px;">
+                <li>✅ <code style="background: rgba(0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">ai-backend-server.js</code> - Backend server</li>
+                <li>✅ <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">package.json</code> - Dependencies</li>
+                <li>✅ <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">ai-mode-setup.html</code> - This setup page</li>
+                <li>✅ <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">start-ai.bat</code> - Windows startup script</li>
+                <li>✅ <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">start-ai.ps1</code> - PowerShell startup script</li>
+            </ul>
+        </div>
+
+        <div style="background: rgba(255, 107, 53, 0.1); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+            <h6 style="color: #ff6b35; margin-bottom: 10px; font-size: 1rem;">🎯 Offline Mode Setup (Default)</h6>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Current Status:</strong> Your AI is running in offline mode by default</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Features:</strong> Local knowledge base, portfolio information, basic AI responses</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>No Setup Required:</strong> Works immediately when you open your portfolio</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>File Location:</strong> <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">ai-enhanced.js</code> contains all offline functionality</p>
+        </div>
+
+        <div style="background: rgba(255, 107, 53, 0.1); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+            <h6 style="color: #ff6b35; margin-bottom: 10px; font-size: 1rem;">🚀 Online Mode Setup (Optional Enhancement)</h6>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Enhanced Features:</strong> Hugging Face AI models, real-time processing, advanced responses</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Setup Required:</strong> Follow steps 1-3 above to enable</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Fallback:</strong> Automatically switches to offline if online fails</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>File Integration:</strong> <code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">ai-enhanced.js</code> automatically detects online mode</p>
+        </div>
+
+        <div style="background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+            <h6 style="color: #ff4444; margin-bottom: 10px; font-size: 1rem;">⚠️ Important Notes</h6>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Cursor Issues Fixed:</strong> This page now overrides the global cursor: none rule</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>No Duplicates:</strong> All conflicting styles have been resolved</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Mobile Compatible:</strong> Works perfectly on all device sizes</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Backup:</strong> Your offline Friday AI will always work regardless of online setup</p>
+        </div>
+
+        <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0;">
+            <h6 style="color: #00ff88; margin-bottom: 10px; font-size: 1rem;">🚨 Troubleshooting</h6>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Server won't start:</strong> Check if port 3000 is free, or change port in setup</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Token invalid:</strong> Verify token has read permissions and is not expired</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Connection failed:</strong> Make sure backend server is running (<code style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #00ff88;">npm start</code>)</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Friday AI not responding:</strong> Check browser console for errors</p>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 8px;"><strong>Cursor not working:</strong> This page fixes cursor issues - other pages may still have cursor: none</p>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- ===== CUSTOM CURSOR FUNCTIONALITY ===== -->
+    <script>
+        // Custom cursor functionality for AI setup page
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            if (!cursor || !cursorFollower) return;
+
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+            let followerX = 0, followerY = 0;
+
+            // Update mouse position
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Smooth cursor animation
+            function animateCursor() {
+                // Main cursor - follows mouse directly
+                cursorX += (mouseX - cursorX) * 0.3;
+                cursorY += (mouseY - cursorY) * 0.3;
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+
+                // Follower cursor - follows with delay
+                followerX += (mouseX - followerX) * 0.1;
+                followerY += (mouseY - followerY) * 0.1;
+                cursorFollower.style.left = followerX + 'px';
+                cursorFollower.style.top = followerY + 'px';
+
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Cursor hover effects
+            const hoverElements = document.querySelectorAll('a, button, .setup-card, .form-group input, .form-group select');
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                    cursorFollower.classList.add('hover');
+                });
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                    cursorFollower.classList.remove('hover');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

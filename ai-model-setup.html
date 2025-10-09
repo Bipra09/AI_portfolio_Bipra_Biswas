@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI Model Setup - Hugging Face Integration</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="enhanced-ai-chat.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .setup-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 20, 0.98) 0%, 
+                rgba(26, 26, 46, 0.98) 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .setup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .setup-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .setup-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .setup-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .setup-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 255, 136, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .setup-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setup-card h3 i {
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(0, 255, 136, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .token-input {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .token-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .token-status.valid {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .token-status.invalid {
+            background: rgba(255, 69, 58, 0.1);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            color: #ff4444;
+        }
+
+        .token-status.pending {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffaa00;
+        }
+
+        .setup-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #001310;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 68, 68, 0.3);
+        }
+
+        .connection-status {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .connection-status.connected {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .connection-status.disconnected {
+            background: rgba(255, 69, 58, 0.1);
+            border: 2px solid rgba(255, 69, 58, 0.3);
+        }
+
+        .connection-status.testing {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-indicator.connected {
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.disconnected {
+            background: #ff4444;
+        }
+
+        .status-indicator.testing {
+            background: #ffaa00;
+            animation: spin 1s linear infinite;
+        }
+
+        .model-info {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .model-info h4 {
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .model-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .model-info li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .model-info li:last-child {
+            border-bottom: none;
+        }
+
+        .model-info .label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .model-info .value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .setup-instructions {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .setup-instructions h3 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+
+        .setup-instructions ol {
+            padding-left: 20px;
+        }
+
+        .setup-instructions li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .setup-instructions code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+        }
+
+        .back-to-portfolio {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-to-portfolio:hover {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .setup-container {
+                padding: 20px 15px;
+            }
+            
+            .setup-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-to-portfolio">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>🤖 Friday AI Model Setup</h1>
+            <p>Configure your AI assistant with Hugging Face integration, custom models, and advanced settings</p>
+        </div>
+
+        <div class="setup-grid">
+            <!-- Hugging Face Configuration -->
+            <div class="setup-card">
+                <h3><i class="fas fa-key"></i> Hugging Face API Configuration</h3>
+                
+                <div class="form-group">
+                    <label for="hf-token">Hugging Face Access Token</label>
+                    <input type="password" id="hf-token" class="token-input" placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                    <div class="token-status pending" id="token-status">
+                        <i class="fas fa-clock"></i> Token not validated
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hf-username">Hugging Face Username (Optional)</label>
+                    <input type="text" id="hf-username" placeholder="your-username">
+                </div>
+
+                <div class="form-group">
+                    <label for="hf-org">Organization (Optional)</label>
+                    <input type="text" id="hf-org" placeholder="your-organization">
+                </div>
+
+                <button class="btn btn-primary" onclick="validateToken()">
+                    <i class="fas fa-check"></i> Validate Token
+                </button>
+            </div>
+
+            <!-- Server Configuration -->
+            <div class="setup-card">
+                <h3><i class="fas fa-server"></i> Server Configuration</h3>
+                
+                <div class="form-group">
+                    <label for="server-port">Backend Server Port</label>
+                    <input type="number" id="server-port" value="3000" min="1000" max="9999">
+                </div>
+
+                <div class="form-group">
+                    <label for="server-host">Server Host</label>
+                    <input type="text" id="server-host" value="localhost" placeholder="localhost or IP address">
+                </div>
+
+                <div class="form-group">
+                    <label for="cors-origin">CORS Origin</label>
+                    <select id="cors-origin">
+                        <option value="*">All Origins (*)</option>
+                        <option value="http://localhost:3000">Localhost:3000</option>
+                        <option value="http://localhost:5000">Localhost:5000</option>
+                        <option value="https://yourdomain.com">Custom Domain</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-secondary" onclick="testConnection()">
+                    <i class="fas fa-plug"></i> Test Connection
+                </button>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="setup-card">
+                <h3><i class="fas fa-brain"></i> AI Model Selection</h3>
+                
+                <div class="form-group">
+                    <label for="model-type">Model Type</label>
+                    <select id="model-type" onchange="updateModelOptions()">
+                        <option value="gemma">Google Gemma</option>
+                        <option value="llama">Meta Llama</option>
+                        <option value="mistral">Mistral AI</option>
+                        <option value="custom">Custom Model</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="model-size">Model Size</label>
+                    <select id="model-size">
+                        <option value="7b">7B Parameters</option>
+                        <option value="13b">13B Parameters</option>
+                        <option value="30b">30B Parameters</option>
+                        <option value="70b">70B Parameters</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="custom-model">Custom Model ID</label>
+                    <input type="text" id="custom-model" placeholder="google/gemma-7b-it" disabled>
+                </div>
+
+                <div class="model-info">
+                    <h4>Selected Model: <span id="selected-model">google/gemma-7b-it</span></h4>
+                    <ul>
+                        <li>
+                            <span class="label">Parameters:</span>
+                            <span class="value" id="model-params">7B</span>
+                        </li>
+                        <li>
+                            <span class="label">Context Length:</span>
+                            <span class="value" id="model-context">8192</span>
+                        </li>
+                        <li>
+                            <span class="label">License:</span>
+                            <span class="value" id="model-license">Gemma License</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div class="setup-card">
+                <h3><i class="fas fa-cogs"></i> Advanced Settings</h3>
+                
+                <div class="form-group">
+                    <label for="max-tokens">Maximum Response Tokens</label>
+                    <input type="number" id="max-tokens" value="512" min="64" max="2048">
+                </div>
+
+                <div class="form-group">
+                    <label for="temperature">Temperature (Creativity)</label>
+                    <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+                    <span id="temp-value">0.7</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="top-p">Top P (Nucleus Sampling)</label>
+                    <input type="range" id="top-p" min="0" max="1" step="0.05" value="0.9">
+                    <span id="top-p-value">0.9</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeout">Request Timeout (ms)</label>
+                    <input type="number" id="timeout" value="30000" min="5000" max="120000" step="1000">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="fallback-local" checked>
+                        Fallback to Local Knowledge Base
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="connection-status disconnected" id="connection-status">
+            <div class="status-indicator disconnected"></div>
+            <strong>Status:</strong> <span id="status-text">Disconnected</span>
+            <div id="status-details">Configure your settings and test connection to get started</div>
+        </div>
+
+        <!-- Setup Actions -->
+        <div class="setup-actions">
+            <button class="btn btn-primary" onclick="saveConfiguration()">
+                <i class="fas fa-save"></i> Save Configuration
+            </button>
+            <button class="btn btn-secondary" onclick="loadConfiguration()">
+                <i class="fas fa-download"></i> Load Configuration
+            </button>
+            <button class="btn btn-danger" onclick="resetConfiguration()">
+                <i class="fas fa-trash"></i> Reset to Defaults
+            </button>
+        </div>
+
+        <!-- Setup Instructions -->
+        <div class="setup-instructions">
+            <h3><i class="fas fa-info-circle"></i> Setup Instructions</h3>
+            <ol>
+                <li><strong>Get Hugging Face Token:</strong> Visit <a href="https://huggingface.co/settings/tokens" target="_blank" style="color: #00d4ff;">https://huggingface.co/settings/tokens</a> and create a new access token with read permissions.</li>
+                <li><strong>Choose Model:</strong> Select your preferred AI model from the dropdown. Popular options include Google Gemma, Meta Llama, and Mistral AI models.</li>
+                <li><strong>Configure Server:</strong> Set your preferred port (default: 3000) and ensure it's not in use by other applications.</li>
+                <li><strong>Test Connection:</strong> Use the "Test Connection" button to verify your setup is working correctly.</li>
+                <li><strong>Save Configuration:</strong> Click "Save Configuration" to store your settings for future use.</li>
+                <li><strong>Start Backend:</strong> Run <code>node ai-backend-server.js</code> in your terminal to start the AI backend server.</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Configuration object
+        let currentConfig = {
+            huggingFace: {
+                token: '',
+                username: '',
+                organization: ''
+            },
+            server: {
+                port: 3000,
+                host: 'localhost',
+                corsOrigin: '*'
+            },
+            model: {
+                type: 'gemma',
+                size: '7b',
+                customId: '',
+                maxTokens: 512,
+                temperature: 0.7,
+                topP: 0.9,
+                timeout: 30000
+            },
+            features: {
+                fallbackToLocal: true
+            }
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+            updateModelOptions();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Temperature slider
+            document.getElementById('temperature').addEventListener('input', function(e) {
+                document.getElementById('temp-value').textContent = e.target.value;
+            });
+
+            // Top P slider
+            document.getElementById('top-p').addEventListener('input', function(e) {
+                document.getElementById('top-p-value').textContent = e.target.value;
+            });
+
+            // Model type change
+            document.getElementById('model-type').addEventListener('change', updateModelOptions);
+        }
+
+        function updateModelOptions() {
+            const modelType = document.getElementById('model-type').value;
+            const modelSize = document.getElementById('model-size');
+            const customModel = document.getElementById('custom-model');
+            const selectedModel = document.getElementById('selected-model');
+            const modelParams = document.getElementById('model-params');
+            const modelContext = document.getElementById('model-context');
+            const modelLicense = document.getElementById('model-license');
+
+            // Reset size options
+            modelSize.innerHTML = '';
+
+            if (modelType === 'gemma') {
+                modelSize.innerHTML = `
+                    <option value="2b">2B Parameters</option>
+                    <option value="7b">7B Parameters</option>
+                    <option value="9b">9B Parameters</option>
+                `;
+                customModel.value = 'google/gemma-7b-it';
+                customModel.disabled = true;
+            } else if (modelType === 'llama') {
+                modelSize.innerHTML = `
+                    <option value="7b">7B Parameters</option>
+                    <option value="13b">13B Parameters</option>
+                    <option value="30b">30B Parameters</option>
+                    <option value="70b">70B Parameters</option>
+                `;
+                customModel.value = 'meta-llama/Llama-2-7b-chat-hf';
+                customModel.disabled = true;
+            } else if (modelType === 'mistral') {
+                modelSize.innerHTML = `
+                    <option value="7b">7B Parameters</option>
+                    <option value="8x7b">8x7B Parameters</option>
+                `;
+                customModel.value = 'mistralai/Mistral-7B-Instruct-v0.2';
+                customModel.disabled = true;
+            } else if (modelType === 'custom') {
+                modelSize.innerHTML = '<option value="custom">Custom</option>';
+                customModel.disabled = false;
+                customModel.placeholder = 'Enter model ID (e.g., microsoft/DialoGPT-medium)';
+            }
+
+            updateModelInfo();
+        }
+
+        function updateModelInfo() {
+            const modelType = document.getElementById('model-type').value;
+            const modelSize = document.getElementById('model-size').value;
+            const customModel = document.getElementById('custom-model').value;
+            
+            let modelId = customModel;
+            let params = modelSize;
+            let context = '8192';
+            let license = 'Custom License';
+
+            if (modelType === 'gemma') {
+                modelId = `google/gemma-${modelSize}-it`;
+                params = modelSize;
+                context = '8192';
+                license = 'Gemma License';
+            } else if (modelType === 'llama') {
+                modelId = `meta-llama/Llama-2-${modelSize}-chat-hf`;
+                params = modelSize;
+                context = '4096';
+                license = 'Meta License';
+            } else if (modelType === 'mistral') {
+                if (modelSize === '8x7b') {
+                    modelId = 'mistralai/Mixtral-8x7B-Instruct-v0.1';
+                    params = '8x7B';
+                    context = '32768';
+                } else {
+                    modelId = 'mistralai/Mistral-7B-Instruct-v0.2';
+                    params = '7B';
+                    context = '8192';
+                }
+                license = 'Apache 2.0';
+            }
+
+            document.getElementById('selected-model').textContent = modelId;
+            document.getElementById('model-params').textContent = params;
+            document.getElementById('model-context').textContent = context;
+            document.getElementById('model-license').textContent = license;
+        }
+
+        async function validateToken() {
+            const token = document.getElementById('hf-token').value;
+            const status = document.getElementById('token-status');
+
+            if (!token) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> No token provided';
+                return;
+            }
+
+            status.className = 'token-status pending';
+            status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating token...';
+
+            try {
+                // Test token with Hugging Face API
+                const response = await fetch('https://huggingface.co/api/whoami', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    status.className = 'token-status valid';
+                    status.innerHTML = `<i class="fas fa-check"></i> Valid token for ${userData.name || 'user'}`;
+                    
+                    // Auto-fill username if available
+                    if (userData.name) {
+                        document.getElementById('hf-username').value = userData.name;
+                    }
+                } else {
+                    status.className = 'token-status invalid';
+                    status.innerHTML = '<i class="fas fa-times"></i> Invalid token';
+                }
+            } catch (error) {
+                status.className = 'token-status invalid';
+                status.innerHTML = '<i class="fas fa-times"></i> Validation failed';
+                console.error('Token validation error:', error);
+            }
+        }
+
+        async function testConnection() {
+            const status = document.getElementById('connection-status');
+            const statusText = document.getElementById('status-text');
+            const statusDetails = document.getElementById('status-details');
+
+            status.className = 'connection-status testing';
+            statusText.textContent = 'Testing Connection...';
+            statusDetails.textContent = 'Checking server connectivity...';
+
+            const port = document.getElementById('server-port').value;
+            const host = document.getElementById('server-host').value;
+
+            try {
+                const response = await fetch(`http://${host}:${port}/api/health`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    status.className = 'connection-status connected';
+                    statusText.textContent = 'Connected';
+                    statusDetails.textContent = `Server running at ${host}:${port} - ${data.message}`;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                status.className = 'connection-status disconnected';
+                statusText.textContent = 'Connection Failed';
+                statusDetails.textContent = `Cannot connect to ${host}:${port}. Make sure the server is running.`;
+                console.error('Connection test error:', error);
+            }
+        }
+
+        function saveConfiguration() {
+            // Collect all form values
+            currentConfig.huggingFace.token = document.getElementById('hf-token').value;
+            currentConfig.huggingFace.username = document.getElementById('hf-username').value;
+            currentConfig.huggingFace.organization = document.getElementById('hf-org').value;
+            
+            currentConfig.server.port = parseInt(document.getElementById('server-port').value);
+            currentConfig.server.host = document.getElementById('server-host').value;
+            currentConfig.server.corsOrigin = document.getElementById('cors-origin').value;
+            
+            currentConfig.model.type = document.getElementById('model-type').value;
+            currentConfig.model.size = document.getElementById('model-size').value;
+            currentConfig.model.customId = document.getElementById('custom-model').value;
+            currentConfig.model.maxTokens = parseInt(document.getElementById('max-tokens').value);
+            currentConfig.model.temperature = parseFloat(document.getElementById('temperature').value);
+            currentConfig.model.topP = parseFloat(document.getElementById('top-p').value);
+            currentConfig.model.timeout = parseInt(document.getElementById('timeout').value);
+            
+            currentConfig.features.fallbackToLocal = document.getElementById('fallback-local').checked;
+
+            // Save to localStorage
+            localStorage.setItem('fridayAIConfig', JSON.stringify(currentConfig));
+
+            // Update backend configuration
+            updateBackendConfig();
+
+            // Show success message
+            showNotification('Configuration saved successfully!', 'success');
+        }
+
+        function loadConfiguration() {
+            const saved = localStorage.getItem('fridayAIConfig');
+            if (saved) {
+                currentConfig = JSON.parse(saved);
+                
+                // Apply saved configuration to form
+                document.getElementById('hf-token').value = currentConfig.huggingFace.token || '';
+                document.getElementById('hf-username').value = currentConfig.huggingFace.username || '';
+                document.getElementById('hf-org').value = currentConfig.huggingFace.organization || '';
+                
+                document.getElementById('server-port').value = currentConfig.server.port || 3000;
+                document.getElementById('server-host').value = currentConfig.server.host || 'localhost';
+                document.getElementById('cors-origin').value = currentConfig.server.corsOrigin || '*';
+                
+                document.getElementById('model-type').value = currentConfig.model.type || 'gemma';
+                document.getElementById('model-size').value = currentConfig.model.size || '7b';
+                document.getElementById('custom-model').value = currentConfig.model.customId || '';
+                document.getElementById('max-tokens').value = currentConfig.model.maxTokens || 512;
+                document.getElementById('temperature').value = currentConfig.model.temperature || 0.7;
+                document.getElementById('top-p').value = currentConfig.model.topP || 0.9;
+                document.getElementById('timeout').value = currentConfig.model.timeout || 30000;
+                
+                document.getElementById('fallback-local').checked = currentConfig.features.fallbackToLocal !== false;
+
+                updateModelOptions();
+                showNotification('Configuration loaded successfully!', 'success');
+            } else {
+                showNotification('No saved configuration found.', 'info');
+            }
+        }
+
+        function resetConfiguration() {
+            if (confirm('Are you sure you want to reset all configuration to defaults? This cannot be undone.')) {
+                localStorage.removeItem('fridayAIConfig');
+                
+                // Reset form to defaults
+                document.getElementById('hf-token').value = '';
+                document.getElementById('hf-username').value = '';
+                document.getElementById('hf-org').value = '';
+                document.getElementById('server-port').value = 3000;
+                document.getElementById('server-host').value = 'localhost';
+                document.getElementById('cors-origin').value = '*';
+                document.getElementById('model-type').value = 'gemma';
+                document.getElementById('model-size').value = '7b';
+                document.getElementById('custom-model').value = '';
+                document.getElementById('max-tokens').value = 512;
+                document.getElementById('temperature').value = 0.7;
+                document.getElementById('top-p').value = 0.9;
+                document.getElementById('timeout').value = 30000;
+                document.getElementById('fallback-local').checked = true;
+
+                updateModelOptions();
+                showNotification('Configuration reset to defaults!', 'info');
+            }
+        }
+
+        function updateBackendConfig() {
+            // This function would update the backend configuration
+            // For now, we'll just log the configuration
+            console.log('Updated configuration:', currentConfig);
+            
+            // You could also send this to your backend server
+            // fetch('/api/config', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(currentConfig)
+            // });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: #fff;
+                font-weight: 500;
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+
+            // Set background color based on type
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #ff4444, #ff6b6b)';
+            } else if (type === 'warning') {
+                notification.style.background = 'linear-gradient(135deg, #ffaa00, #ffcc00)';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #00d4ff, #667eea)';
+            }
+
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Auto-save configuration when form changes
+        document.addEventListener('change', function() {
+            // Debounce auto-save
+            clearTimeout(window.autoSaveTimeout);
+            window.autoSaveTimeout = setTimeout(() => {
+                saveConfiguration();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

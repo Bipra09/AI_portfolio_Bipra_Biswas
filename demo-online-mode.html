@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI Online Mode Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .status-card {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #ff4444;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: #00ff88;
+        }
+
+        .status-indicator.offline {
+            background: #ff4444;
+        }
+
+        .chat-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .message.user {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid #00ff88;
+        }
+
+        .message.ai {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid #00d4ff;
+        }
+
+        .message-header {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .input-container input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .input-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #001310;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .info-section h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .info-section li:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.5);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Portfolio</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Friday AI Online Mode Demo</h1>
+            <p>Test your Friday AI online mode setup and see the difference!</p>
+        </div>
+
+        <div class="status-card">
+            <div class="status-indicator" id="status-indicator"></div>
+            <strong id="status-text">Checking connection...</strong>
+            <div id="status-details">Verifying server and AI mode status</div>
+        </div>
+
+        <div class="chat-container">
+            <h3>💬 Chat with Friday AI</h3>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai">
+                    <div class="message-header">Friday AI</div>
+                    <div class="message-content">Hello! I'm Friday, your AI assistant. I'm currently checking my connection status. How can I help you today?</div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <input type="text" id="message-input" placeholder="Ask Friday anything..." />
+                <button class="btn" id="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>ℹ️ How to Use This Demo</h3>
+            <ul>
+                <li>1. Make sure your backend server is running (`npm start`)</li>
+                <li>2. Complete the AI Mode Setup in your portfolio</li>
+                <li>3. Activate online mode to connect with Hugging Face</li>
+                <li>4. Ask questions and see the difference between offline and online modes</li>
+                <li>5. Check the status indicator to see your connection status</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let isOnlineMode = false;
+        let serverUrl = 'http://localhost:3000';
+
+        // Check connection status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkConnectionStatus();
+            loadSavedMessages();
+        });
+
+        async function checkConnectionStatus() {
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            const statusDetails = document.getElementById('status-details');
+
+            try {
+                const response = await fetch(`${serverUrl}/api/health`);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.config && data.config.onlineMode) {
+                        // Online mode is active
+                        statusIndicator.className = 'status-indicator online';
+                        statusText.textContent = 'Online Mode Active';
+                        statusDetails.textContent = `Connected to ${data.config.model || 'AI Model'} via Hugging Face`;
+                        isOnlineMode = true;
+                    } else {
+                        // Server running but offline mode
+                        statusIndicator.className = 'status-indicator offline';
+                        statusText.textContent = 'Offline Mode';
+                        statusDetails.textContent = 'Server running but online mode not activated';
+                        isOnlineMode = false;
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusIndicator.className = 'status-indicator offline';
+                statusText.textContent = 'Server Not Connected';
+                statusDetails.textContent = 'Make sure your backend server is running (npm start)';
+                isOnlineMode = false;
+            }
+        }
+
+        function addMessage(content, isUser = false, mode = 'local') {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            
+            const header = isUser ? 'You' : 'Friday AI';
+            const modeInfo = mode !== 'local' ? ` (${mode})` : '';
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">${header}${modeInfo}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Save message to localStorage
+            saveMessage(content, isUser, mode);
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+            
+            // Disable send button while processing
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Processing...';
+            
+            try {
+                if (isOnlineMode) {
+                    // Try online mode first
+                    const response = await fetch(`${serverUrl}/api/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            context: 'demo'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        addMessage(data.response, false, data.mode);
+                    } else {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                } else {
+                    // Offline mode - simulate response
+                    const offlineResponses = [
+                        "I'm currently in offline mode, but I can still help you with basic information about Bipra's portfolio and skills.",
+                        "Since I'm offline, I'm using my local knowledge base. I can tell you about Bipra's projects, experience, and technical skills.",
+                        "I'm working in offline mode right now. I can help you with portfolio information and general questions about Bipra's background."
+                    ];
+                    
+                    const randomResponse = offlineResponses[Math.floor(Math.random() * offlineResponses.length)];
+                    addMessage(randomResponse, false, 'offline');
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+                
+                // Fallback response
+                const fallbackResponse = "I'm having trouble processing your request right now. Please check if the server is running and try again.";
+                addMessage(fallbackResponse, false, 'error');
+            } finally {
+                // Re-enable send button
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+            }
+        }
+
+        // Handle Enter key in input
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Save messages to localStorage
+        function saveMessage(content, isUser, mode) {
+            const messages = JSON.parse(localStorage.getItem('fridayAIDemoMessages') || '[]');
+            messages.push({
+                content,
+                isUser,
+                mode,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 50 messages
+            if (messages.length > 50) {
+                messages.splice(0, messages.length - 50);
+            }
+            
+            localStorage.setItem('fridayAIDemoMessages', JSON.stringify(messages));
+        }
+
+        // Load saved messages
+        function loadSavedMessages() {
+            const messages = JSON.parse(localStorage.getItem('fridayAIDemoMessages') || '[]');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Clear default message
+            chatMessages.innerHTML = '';
+            
+            // Add saved messages
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.isUser ? 'user' : 'ai'}`;
+                
+                const header = msg.isUser ? 'You' : 'Friday AI';
+                const modeInfo = msg.mode !== 'local' ? ` (${msg.mode})` : '';
+                
+                messageDiv.innerHTML = `
+                    <div class="message-header">${header}${modeInfo}</div>
+                    <div class="message-content">${msg.content}</div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+            });
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Refresh connection status every 30 seconds
+        setInterval(checkConnectionStatus, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI Download Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-area { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 5px; }
+        .response { background: #f0f0f0; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Friday AI Download Test</h1>
+    
+    <div class="test-area">
+        <h3>Test Download Functionality</h3>
+        <button onclick="testDownload()">Test Download Request</button>
+        <button onclick="testFileSelection()">Test File Selection</button>
+        <div class="response" id="response">Click a button to test...</div>
+    </div>
+
+    <script src="friday-ai-config.js"></script>
+    <script src="friday-ai-enhanced.js"></script>
+    
+    <script>
+        let fridayAI = null;
+        
+        // Initialize Friday AI
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (window.FridayAI) {
+                    fridayAI = new FridayAI();
+                    console.log('✅ Friday AI initialized');
+                } else {
+                    console.log('❌ Friday AI not found');
+                }
+            }, 1000);
+        });
+        
+        async function testDownload() {
+            if (!fridayAI) {
+                document.getElementById('response').textContent = '❌ Friday AI not initialized yet';
+                return;
+            }
+            
+            try {
+                const response = await fridayAI.processQuery('download');
+                document.getElementById('response').textContent = response;
+            } catch (error) {
+                document.getElementById('response').textContent = '❌ Error: ' + error.message;
+            }
+        }
+        
+        async function testFileSelection() {
+            if (!fridayAI) {
+                document.getElementById('response').textContent = '❌ Friday AI not initialized yet';
+                return;
+            }
+            
+            try {
+                // First activate download mode
+                await fridayAI.processQuery('download');
+                // Then test file selection
+                const response = await fridayAI.processQuery('download file 1');
+                document.getElementById('response').textContent = response;
+            } catch (error) {
+                document.getElementById('response').textContent = '❌ Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

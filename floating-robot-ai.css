@@ -1,0 +1,233 @@
+/* ===== FUTURISTIC FLOATING ROBOT AI ORB ===== */
+/* This file overrides all existing Friday AI orb styles */
+
+.friday-orb-container {
+    position: fixed !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    z-index: 10000 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 8px 32px rgba(0, 150, 255, 0.4));
+}
+
+.friday-orb {
+    position: relative !important;
+    width: 90px !important;
+    height: 90px !important;
+    background: radial-gradient(circle at 30% 30%, 
+        rgba(0, 150, 255, 0.9) 0%, 
+        rgba(0, 100, 200, 0.8) 40%, 
+        rgba(0, 50, 150, 0.6) 100%) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 
+        0 0 30px rgba(0, 150, 255, 0.6),
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: visible !important;
+    z-index: 10001 !important;
+    border: 2px solid rgba(0, 150, 255, 0.3) !important;
+    animation: robotFloat 6s ease-in-out infinite !important;
+    transform: translateZ(0) !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+}
+
+/* Robot floating animation - Enhanced smooth floating effect */
+@keyframes robotFloat {
+    0% { 
+        transform: translateZ(0) translateY(0px) rotate(0deg) scale(1); 
+    }
+    25% { 
+        transform: translateZ(0) translateY(-8px) rotate(0deg) scale(1.02); 
+    }
+    50% { 
+        transform: translateZ(0) translateY(-15px) rotate(0deg) scale(1.05); 
+    }
+    75% { 
+        transform: translateZ(0) translateY(-8px) rotate(0deg) scale(1.02); 
+    }
+    100% { 
+        transform: translateZ(0) translateY(0px) rotate(0deg) scale(1); 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Futuristic Robot AI Face */
+.orb-face {
+    position: relative !important;
+    width: 70px !important;
+    height: 70px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10 !important;
+}
+
+/* Glowing Blue Robot Eyes */
+.ai-eyes {
+    display: flex !important;
+    gap: 20px !important;
+    margin-bottom: 12px !important;
+    align-items: center !important;
+}
+
+.ai-eye {
+    position: relative !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: radial-gradient(circle at 30% 30%, 
+        rgba(0, 200, 255, 1) 0%, 
+        rgba(0, 150, 255, 0.9) 60%, 
+        rgba(0, 100, 200, 0.8) 100%) !important;
+    border-radius: 50% !important;
+    border: 2px solid rgba(0, 200, 255, 0.8) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 
+        0 0 20px rgba(0, 200, 255, 0.8),
+        inset 0 2px 8px rgba(255, 255, 255, 0.3) !important;
+    animation: eyeGlow 4s ease-in-out infinite !important;
+}
+
+/* Eye glow animation - Enhanced floating effect */
+@keyframes eyeGlow {
+    0% { 
+        box-shadow: 
+            0 0 20px rgba(0, 200, 255, 0.8),
+            inset 0 2px 8px rgba(255, 255, 255, 0.3); 
+        transform: scale(1);
+    }
+    25% { 
+        box-shadow: 
+            0 0 25px rgba(0, 200, 255, 0.9),
+            inset 0 2px 8px rgba(255, 255, 255, 0.4); 
+        transform: scale(1.02);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px rgba(0, 200, 255, 1),
+            inset 0 2px 8px rgba(255, 255, 255, 0.5); 
+        transform: scale(1.05);
+    }
+    75% { 
+        box-shadow: 
+            0 0 25px rgba(0, 200, 255, 0.9),
+            inset 0 2px 8px rgba(255, 255, 255, 0.4); 
+        transform: scale(1.02);
+    }
+    100% { 
+        box-shadow: 
+            0 0 20px rgba(0, 200, 255, 0.8),
+            inset 0 2px 8px rgba(255, 255, 255, 0.3); 
+        transform: scale(1);
+    }
+}
+
+.eye-pupil {
+    position: absolute !important;
+    width: 8px !important;
+    height: 8px !important;
+    background: #000 !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8) !important;
+}
+
+.eye-iris {
+    position: absolute !important;
+    width: 12px !important;
+    height: 12px !important;
+    background: radial-gradient(circle at 30% 30%, 
+        rgba(0, 255, 255, 1) 0%, 
+        rgba(0, 200, 255, 0.9) 100%) !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important;
+}
+
+.eye-glow {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: radial-gradient(circle at center, 
+        rgba(0, 200, 255, 0.4) 0%, 
+        transparent 70%) !important;
+    border-radius: 50% !important;
+    animation: eyeGlowPulse 3s ease-in-out infinite !important;
+}
+
+@keyframes eyeGlowPulse {
+    0%, 100% { 
+        opacity: 0.4; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1); 
+    }
+}
+
+/* Hover effects for the floating robot */
+.friday-orb:hover {
+    transform: scale(1.1) translateY(-10px) !important;
+    box-shadow: 
+        0 0 40px rgba(0, 150, 255, 0.8),
+        0 15px 50px rgba(0, 0, 0, 0.5),
+        inset 0 2px 8px rgba(255, 255, 255, 0.3) !important;
+    filter: brightness(1.2) !important;
+}
+
+
+
+
+
+.friday-orb:hover .ai-eye {
+    animation: eyeGlow 2s ease-in-out infinite !important;
+    transform: scale(1.1) !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .friday-orb {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    
+    .orb-face {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .ai-eyes {
+        gap: 15px !important;
+    }
+    
+    .ai-eye {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
