@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Speaker Button Issue</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .chat-simulator {
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .chat-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .control-btn:hover {
+            background: #218838;
+        }
+        
+        .control-btn.speaking {
+            background: #dc3545;
+        }
+        
+        .control-btn.speaking:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Speaker Button Issue Debug</h1>
+        
+        <div class="debug-info">
+            <h3>Debug Information:</h3>
+            <p><strong>Issue:</strong> Clicking the speaker button closes the entire chat box</p>
+            <p><strong>Expected:</strong> Speaker button should only toggle speech, not close chat</p>
+            <p><strong>Status:</strong> Testing with enhanced error handling and debugging</p>
+        </div>
+        
+        <div class="chat-simulator">
+            <div class="chat-header">
+                <h3>🤖 Friday AI Chat Simulator</h3>
+                <div class="chat-controls">
+                    <button class="control-btn" id="test-speak" title="Test Speaker Button">
+                        🔊 Speak
+                    </button>
+                    <button class="control-btn" id="test-voice" title="Test Voice Input">
+                        🎤 Voice
+                    </button>
+                    <button class="control-btn" id="test-close" title="Test Close Button">
+                        ❌ Close
+                    </button>
+                </div>
+            </div>
+            
+            <div id="chat-messages">
+                <p><strong>Friday:</strong> Hello! I'm Friday, your AI assistant. How can I help you today?</p>
+                <p><strong>You:</strong> Can you tell me about your capabilities?</p>
+                <p><strong>Friday:</strong> Of course! I can help with portfolio information, website control, creative responses, and file downloads. I'm running in offline mode with a local knowledge base.</p>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <input type="text" id="test-input" placeholder="Type a message..." style="width: 70%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <button class="control-btn" id="test-send">Send</button>
+            </div>
+        </div>
+        
+        <div class="debug-info">
+            <h3>Console Debug Output:</h3>
+            <p>Open your browser's Developer Tools (F12) and check the Console tab for debug information.</p>
+            <p>Look for:</p>
+            <ul>
+                <li>Click target information</li>
+                <li>Chat container containment checks</li>
+                <li>hideChat method calls with stack traces</li>
+                <li>Any errors in toggleSpeak method</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button class="test-button" onclick="testSpeakerButton()">🧪 Test Speaker Button</button>
+            <button class="test-button" onclick="clearConsole()">🗑️ Clear Console</button>
+            <button class="test-button" onclick="showDebugInfo()">📊 Show Debug Info</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulate the Friday AI system for testing
+        class TestFridayAI {
+            constructor() {
+                this.isSpeaking = false;
+                this.speechSynthesis = window.speechSynthesis;
+            }
+            
+            speak(text) {
+                if (this.speechSynthesis) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.2;
+                    utterance.volume = 0.8;
+                    
+                    this.isSpeaking = true;
+                    this.updateSpeakButton(true);
+                    
+                    utterance.onend = () => {
+                        this.isSpeaking = false;
+                        this.updateSpeakButton(false);
+                    };
+                    
+                    utterance.onerror = () => {
+                        this.isSpeaking = false;
+                        this.updateSpeakButton(false);
+                    };
+                    
+                    this.speechSynthesis.speak(utterance);
+                    console.log('🔊 Speaking:', text);
+                }
+            }
+            
+            stopSpeaking() {
+                if (this.speechSynthesis && this.isSpeaking) {
+                    this.speechSynthesis.cancel();
+                    this.isSpeaking = false;
+                    this.updateSpeakButton(false);
+                    console.log('🔇 Stopped speaking');
+                }
+            }
+            
+            updateSpeakButton(isSpeaking) {
+                const speakBtn = document.getElementById('test-speak');
+                if (speakBtn) {
+                    if (isSpeaking) {
+                        speakBtn.classList.add('speaking');
+                        speakBtn.textContent = '🔇 Stop';
+                        speakBtn.title = 'Click to Stop Speaking';
+                    } else {
+                        speakBtn.classList.remove('speaking');
+                        speakBtn.textContent = '🔊 Speak';
+                        speakBtn.title = 'Click to Start Speaking';
+                    }
+                }
+            }
+        }
+        
+        // Initialize test system
+        const testFriday = new TestFridayAI();
+        
+        // Test speaker button functionality
+        document.getElementById('test-speak').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🎯 Speaker button clicked');
+            
+            try {
+                if (testFriday.isSpeaking) {
+                    testFriday.stopSpeaking();
+                } else {
+                    // Get the last Friday message to speak
+                    const messages = document.querySelectorAll('#chat-messages p');
+                    let lastFridayMessage = null;
+                    
+                    for (let i = messages.length - 1; i >= 0; i--) {
+                        if (messages[i].textContent.includes('Friday:')) {
+                            lastFridayMessage = messages[i];
+                            break;
+                        }
+                    }
+                    
+                    if (lastFridayMessage) {
+                        const text = lastFridayMessage.textContent.replace('Friday:', '').trim();
+                        testFriday.speak(text);
+                    } else {
+                        testFriday.speak("Hello! I'm Friday, your AI assistant. How can I help you today?");
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error in speaker button:', error);
+            }
+        });
+        
+        // Test voice button
+        document.getElementById('test-voice').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🎤 Voice button clicked');
+            alert('Voice input would be activated here');
+        });
+        
+        // Test close button
+        document.getElementById('test-close').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('❌ Close button clicked');
+            alert('Chat would be closed here');
+        });
+        
+        // Test send button
+        document.getElementById('test-send').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const input = document.getElementById('test-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chat-messages');
+                const newMessage = document.createElement('p');
+                newMessage.innerHTML = `<strong>You:</strong> ${message}`;
+                messagesDiv.appendChild(newMessage);
+                
+                // Simulate Friday's response
+                setTimeout(() => {
+                    const response = document.createElement('p');
+                    response.innerHTML = `<strong>Friday:</strong> I received your message: "${message}". This is a test response.`;
+                    messagesDiv.appendChild(response);
+                }, 1000);
+                
+                input.value = '';
+                console.log('📤 Message sent:', message);
+            }
+        });
+        
+        // Test functions
+        function testSpeakerButton() {
+            console.log('🧪 Testing speaker button functionality...');
+            console.log('Current speaking state:', testFriday.isSpeaking);
+            console.log('Speech synthesis available:', !!window.speechSynthesis);
+        }
+        
+        function clearConsole() {
+            console.clear();
+            console.log('🗑️ Console cleared');
+        }
+        
+        function showDebugInfo() {
+            console.log('📊 Debug Information:');
+            console.log('- Test Friday AI instance:', testFriday);
+            console.log('- Speech synthesis:', window.speechSynthesis);
+            console.log('- Current speaking state:', testFriday.isSpeaking);
+            console.log('- Available voices:', window.speechSynthesis?.getVoices()?.length || 'N/A');
+        }
+        
+        // Initialize
+        console.log('🚀 Test Friday AI System Ready');
+        console.log('Click the speaker button to test functionality');
+        console.log('Check console for debug information');
+    </script>
+</body>
+</html>

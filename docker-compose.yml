@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  huggingface-embedding-server:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-0.3.0
+    container_name: friday-ai-embeddings
+    ports:
+      - "8001:80"
+    environment:
+      - MODEL_ID=BAAI/bge-small-en-v1.5
+      - REVISION=main
+    command: --model-id BAAI/bge-small-en-v1.5 --revision main
+    restart: unless-stopped
+    volumes:
+      - ./models:/models
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G

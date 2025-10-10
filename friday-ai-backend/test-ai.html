@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday AI - Backend Test</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .response {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #00b894;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #fdcb6e;
+        }
+        
+        .error {
+            border-left-color: #e17055;
+            color: #ff7675;
+        }
+        
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .status.online {
+            background: rgba(0, 184, 148, 0.3);
+            color: #00b894;
+        }
+        
+        .status.offline {
+            background: rgba(231, 112, 85, 0.3);
+            color: #e17055;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Friday AI - Backend Test</h1>
+        
+        <div id="status" class="status offline">Checking backend status...</div>
+        
+        <div class="input-group">
+            <input type="text" id="question" placeholder="Ask Friday AI anything..." />
+        </div>
+        
+        <button id="askBtn" onclick="askAI()">Ask Friday AI</button>
+        
+        <div id="response" class="response" style="display: none;"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:5000';
+        
+        // Check backend status on load
+        window.addEventListener('load', checkBackendStatus);
+        
+        async function checkBackendStatus() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/health`);
+                if (response.ok) {
+                    document.getElementById('status').className = 'status online';
+                    document.getElementById('status').textContent = '✅ Backend Online';
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                document.getElementById('status').className = 'status offline';
+                document.getElementById('status').textContent = '❌ Backend Offline - Start the server first';
+            }
+        }
+        
+        async function askAI() {
+            const question = document.getElementById('question').value.trim();
+            const askBtn = document.getElementById('askBtn');
+            const responseDiv = document.getElementById('response');
+            
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+            
+            // Show loading state
+            askBtn.disabled = true;
+            askBtn.textContent = '🤔 Thinking...';
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = '<div class="loading">Friday AI is thinking...</div>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/ask`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Display the response
+                responseDiv.innerHTML = `
+                    <h3>🤖 Friday AI Response:</h3>
+                    <p>${data.answer}</p>
+                    <small>Model: ${data.model} | ${new Date(data.timestamp).toLocaleString()}</small>
+                `;
+                
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Error:</h3>
+                        <p>${error.message}</p>
+                        <p>Make sure the backend server is running on port 5000</p>
+                    </div>
+                `;
+            } finally {
+                // Reset button state
+                askBtn.disabled = false;
+                askBtn.textContent = 'Ask Friday AI';
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('question').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askAI();
+            }
+        });
+    </script>
+</body>
+</html>

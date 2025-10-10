@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <title>Bipra Biswas - Fullstack Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="enhanced-ai-chat.css">
+    <link rel="stylesheet" href="recent.css">
+    <link rel="stylesheet" href="floating-robot-ai.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+        emailjs.init({
+            publicKey: "4Ko8nuyk-U3r8hbJd",
+        });
+    })();
+    </script>
+    <!-- Friday AI Configuration -->
+    <script src="friday-ai-frontend/config.js"></script>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">Bipra<span>.dev</span></a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link" data-translate="nav-home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-translate="nav-about">About</a></li>
+                <li><a href="#projects" class="nav-link" data-translate="nav-projects">Projects</a></li>
+                <li><a href="#showcase" class="nav-link" data-translate="nav-showcase">Showcase</a></li>
+                <li><a href="#skills" class="nav-link" data-translate="nav-skills">Skills</a></li>
+                <li><a href="#experience" class="nav-link" data-translate="nav-experience">Experience</a></li>
+                <li><a href="#contact" class="nav-link" data-translate="nav-contact">Contact</a></li>
+            </ul>
+            <div class="nav-controls">
+                <!-- Resume Download Dropdown -->
+                <div class="dropdown">
+                    <button id="resume-dropdown" class="btn btn-secondary dropdown-toggle">
+                        <i class="fas fa-download"></i> <span data-translate="resume-download">Resume</span>
+                    </button>
+                    <div class="dropdown-menu" id="resume-menu">
+                        <a href="BIPRA_RESUME!-1-2_organized.pdf" class="dropdown-item" download>
+                            <i class="fas fa-file-pdf"></i> <span data-translate="english-resume">English Resume</span>
+                        </a>
+                        <a href="履歴書_BISWAS BIPRA（ビスワス ビップロ）様.pdf" class="dropdown-item" download>
+                            <i class="fas fa-file-pdf"></i> <span data-translate="japanese-resume">Japanese Resume</span>
+                        </a>
+                        <a href="職務経歴書_BISWAS BIPRA（ビスワス ビップロ）様.pdf" class="dropdown-item" download>
+                            <i class="fas fa-file-pdf"></i> <span data-translate="japanese-work-history">Japanese Work History</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Language Toggle -->
+                <button id="language-toggle" class="btn btn-secondary">
+                    <i class="fas fa-language"> 🌐</i> <span id="current-lang">EN</span>
+                </button>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="btn btn-secondary">🌙 <span data-translate="toggle-theme">Toggle Theme</span></button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="greeting" data-translate="greeting">Hi <span class="wave">&#128075;</span>, I'm</span>
+                        <span class="name">
+                        <span class="name-gradient" data-translate="name">Bipra Biswas</span>
+                        <span class="emoji">&#128513;</span></span>
+
+                    </h1>
+                    <p class="hero-subtitle" data-translate="hero-subtitle">Fullstack Developer & AI Enthusiast</p>
+                    <p class="hero-description" data-translate="hero-description">
+                        "Crafting innovative digital solutions with cutting-edge AI and fullstack technologies. 
+                        From intelligent health systems to IoT innovations, I transform ideas into impactful realities."
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary" data-translate="view-work">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary" data-translate="get-in-touch">Get In Touch</a>
+                        <button id="ai-mode-setup-btn" class="btn btn-ai-setup" data-translate="ai-mode-setup">
+                            <i class="fas fa-cog"></i>
+                            <span>AI Mode Setup</span>
+                        </button>
+                    </div>
+                    <div class="hero-social">
+                        <a href="https://linkedin.com/in/bipra-biswas-b1a1b727a" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Bipra09" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:bipra.biswas309@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-container">
+                        <img src="./myphoto_git.jpeg" alt="Bipra Biswas" class="profile-image">
+                        <div class="image-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="about-title">About Me</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p data-translate="about-paragraph1">
+                        As a dedicated Computer Science graduate specializing in AI and Robotics from VIT, I bring a unique 
+                        blend of academic excellence and practical experience to fullstack development. My journey spans from 
+                        building intelligent health monitoring systems to developing IoT solutions with real-world impact.
+                    </p>
+                    <p data-translate="about-paragraph2">
+                        With permanent residency in Japan and experience collaborating with international teams, I combine 
+                        technical expertise with cross-cultural communication skills. My passion lies in creating innovative 
+                        solutions that bridge the gap between AI capabilities and user-centric applications.
+                    </p>
+
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h3>7.62/10</h3>
+                            <p data-translate="stat-cgpa">CGPA</p>
+                        </div>
+                        <div class="stat">
+                            <h3>6+</h3>
+                            <p data-translate="stat-projects">Major Projects</p>
+                        </div>
+                        <div class="stat">
+                            <h3>5+</h3>
+                            <p data-translate="stat-certifications">Certifications</p>
+                        </div>
+                        <div class="stat">
+                            <h3>4</h3>
+                            <p data-translate="stat-languages">Languages</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-card">
+                        <div class="card-header">
+                            <h3 data-translate="quick-facts">Quick Facts</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="fact">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span data-translate="fact-japan">Japan Permanent Resident</span>
+                            </div>
+                            <div class="fact">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span data-translate="fact-graduate">VIT Computer Science Graduate</span>
+                            </div>
+                            <div class="fact">
+                                <i class="fas fa-code"></i>
+                                <span data-translate="fact-specialist">AI & Fullstack Specialist</span>
+                            </div>
+                            <div class="fact">
+                                <i class="fas fa-language"></i>
+                                <span data-translate="fact-multilingual">Multi-lingual (EN/HI/BN/JP)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="projects-title">Featured Projects</h2>
+                <div class="section-line"></div>
+                <p class="section-subtitle" data-translate="projects-subtitle">Fullstack & AI-Powered Solutions</p>
+            </div>
+            
+            <!-- Project Categories -->
+            <div class="project-categories">
+                <button class="category-btn active" data-category="all" data-translate="category-all">All</button>
+                <button class="category-btn" data-category="fullstack" data-translate="category-fullstack">Fullstack</button>
+                <button class="category-btn" data-category="ai" data-translate="category-ai">AI/ML</button>
+                <button class="category-btn" data-category="iot" data-translate="category-iot">IoT</button>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1: SafeOut -->
+                <div class="project-card" data-category="fullstack ai">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./safe.jpg" alt="SafeOut Health System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project1-category">Fullstack + AI</div>
+                        <h3 class="project-title" data-translate="project1-title">SafeOut: Smart Health Advisory</h3>
+                        <p class="project-description" data-translate="project1-description">
+                            AI-powered health monitoring system with personalized wellness recommendations. 
+                            Features real-time weather integration, hydration tracking, and UV exposure warnings.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">ML</span>
+                            <span class="tech-tag">API</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: VisionX -->
+                <div class="project-card" data-category="ai">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./VXX.jpg" alt="VisionX Surveillance">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project2-category">AI + Backend</div>
+                        <h3 class="project-title" data-translate="project2-title">VisionX: AI Video Surveillance</h3>
+                        <p class="project-description" data-translate="project2-description">
+                            Advanced video surveillance system for smart cities with real-time anomaly detection, 
+                            motion tracking, and automated alert systems using OpenCV and Gemma.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">Gemma</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Ollama</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: Virtual Whiteboard -->
+                <div class="project-card" data-category="fullstack ai">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./WHB.jpg" alt="Virtual Whiteboard">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project3-category">Fullstack + ML</div>
+                        <h3 class="project-title" data-translate="project3-title">Virtual Whiteboard ML</h3>
+                        <p class="project-description" data-translate="project3-description">
+                            Interactive virtual whiteboard with ML-powered handwriting recognition (90% accuracy), 
+                            gesture controls, and multi-user collaboration features.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">ML</span>
+                            <span class="tech-tag">WebRTC</span>
+                            <span class="tech-tag">Socket.io</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: IoT Smart Lock -->
+                <div class="project-card" data-category="iot fullstack">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./RFID.jpg" alt="Smart Lock System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project4-category">IoT + Fullstack</div>
+                        <h3 class="project-title" data-translate="project4-title">IoT Smart Lock System</h3>
+                        <p class="project-description" data-translate="project4-description">
+                            Advanced digital lock with RFID, fingerprint, and keypad authentication. 
+                            Features web dashboard, mobile app integration, and real-time monitoring.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">IoT</span>
+                            <span class="tech-tag">RFID</span>
+                            <span class="tech-tag">Web App</span>
+                            <span class="tech-tag">Mobile</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: ROS Bot -->
+                <div class="project-card" data-category="ai iot">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./OB.jpg" alt="ROS Obstacle Bot">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project5-category">Robotics + AI</div>
+                        <h3 class="project-title" data-translate="project5-title">ROS Obstacle Detection Bot</h3>
+                        <p class="project-description" data-translate="project5-description">
+                            Autonomous robot using ROS for obstacle detection and navigation with 95% success rate. 
+                            Advanced path planning and sensor fusion algorithms.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">ROS</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Computer Vision</span>
+                            <span class="tech-tag">Sensors</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6: Facial Recognition -->
+                <div class="project-card" data-category="ai">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="./facial.jpg" alt="Facial Recognition">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-category" data-translate="project6-category">AI + Computer Vision</div>
+                        <h3 class="project-title" data-translate="project6-title">Facial Recognition & Emotion AI</h3>
+                        <p class="project-description" data-translate="project6-description">
+                            Real-time facial recognition with emotion detection using deep learning. 
+                            Applications in security, user engagement, and mental health assessment.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Deep Learning</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="showcase" class="showcase">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="showcase-title">Live Project Showcase</h2>
+                <div class="section-line"></div>
+                <p class="section-subtitle" data-translate="showcase-subtitle">Experience Projects in Action</p>
+            </div>
+            
+            <!-- Showcase Controls -->
+            <div class="showcase-controls">
+                <button class="control-btn active" data-showcase="desktop">
+                    <i class="fas fa-desktop"></i> Desktop
+                </button>
+                <button class="control-btn" data-showcase="tablet">
+                    <i class="fas fa-tablet-alt"></i> Tablet
+                </button>
+                <button class="control-btn" data-showcase="mobile">
+                    <i class="fas fa-mobile-alt"></i> Mobile
+                </button>
+            </div>
+
+            <!-- Showcase Modes -->
+            <div class="showcase-modes">
+                <!-- Desktop Mode -->
+                <div id="desktop-mode" class="showcase-mode active">
+                    <div class="showcase-container">
+                        <div class="device-frame desktop-frame">
+                            <div class="device-header">
+                                <div class="device-buttons">
+                                    <span class="btn red"></span>
+                                    <span class="btn yellow"></span>
+                                    <span class="btn green"></span>
+                                </div>
+                                <div class="device-title">SafeOut Health System</div>
+                            </div>
+                            <div class="iframe-container">
+                                <iframe class="showcase-iframe" src="https://bipra09.github.io/Gen-er-ater/" frameborder="0"></iframe>
+                                <div class="iframe-overlay">
+                                    <div class="loading-spinner">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <p>Loading Project Demo...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tablet Mode -->
+                <div id="tablet-mode" class="showcase-mode">
+                    <div class="showcase-container">
+                        <div class="device-frame tablet-frame">
+                            <div class="device-header">
+                                <div class="device-camera"></div>
+                                <div class="device-title">VisionX Surveillance</div>
+                            </div>
+                            <div class="iframe-container">
+                                <iframe class="showcase-iframe" src="https://bipra09.github.io/MindMesh/" frameborder="0"></iframe>
+                                <div class="iframe-overlay">
+                                    <div class="loading-spinner">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <p>Loading Project Demo...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Mode -->
+                <div id="mobile-mode" class="showcase-mode">
+                    <div class="showcase-container">
+                        <div class="device-frame mobile-frame">
+                            <div class="device-header">
+                                <div class="device-notch"></div>
+                                <div class="device-title">IoT Smart Lock</div>
+                            </div>
+                            <div class="iframe-container">
+                                <iframe class="showcase-iframe" src="https://bipra09.github.io/Text-er/" frameborder="0"></iframe>
+                                <div class="iframe-overlay">
+                                    <div class="loading-spinner">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <p>Loading Project Demo...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Tour -->
+            <div class="showcase-tour">
+                <div class="tour-header">
+                    <h3>Interactive Tour</h3>
+                    <div class="tour-controls">
+                        <button id="prev-step" class="tour-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="play-pause" class="tour-btn">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button id="next-step" class="tour-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tour-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-percentage">0%</span>
+                </div>
+
+                <div class="tour-highlights">
+                    <div class="tour-highlight active" data-step="1">
+                        <div class="highlight-ring"></div>
+                        <div class="highlight-label">Welcome to the project!</div>
+                    </div>
+                    <div class="tour-highlight" data-step="2">
+                        <div class="highlight-ring"></div>
+                        <div class="highlight-label">AI-powered features</div>
+                    </div>
+                    <div class="tour-highlight" data-step="3">
+                        <div class="highlight-ring"></div>
+                        <div class="highlight-label">Responsive design</div>
+                    </div>
+                    <div class="tour-highlight" data-step="4">
+                        <div class="highlight-ring"></div>
+                        <div class="highlight-label">Interactive elements</div>
+                    </div>
+                    <div class="tour-highlight" data-step="5">
+                        <div class="highlight-ring"></div>
+                        <div class="highlight-label">Modern UI/UX</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Callouts -->
+            <div class="feature-callouts">
+                <div class="callout" data-feature="ai">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Features</span>
+                </div>
+                <div class="callout" data-feature="responsive">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Responsive</span>
+                </div>
+                <div class="callout" data-feature="interactive">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>Interactive</span>
+                </div>
+                <div class="callout" data-feature="modern">
+                    <i class="fas fa-rocket"></i>
+                    <span>Modern UI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="skills-title">Technical Skills</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="skills-content">
+                <div class="skills-category">
+                    <h3 data-translate="frontend-title">Frontend Development</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">HTML/CSS</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">React</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skills-category">
+                    <h3 data-translate="backend-title">Backend Development</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">SQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">C</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills-category">
+                    <h3 data-translate="aiml-title">AI/ML & Tools</h3>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name" data-translate="skill-ml">Machine Learning</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name" data-translate="skill-nn">Neural Networks</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name" data-translate="skill-data">Data Analysis</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="experience-title">Experience & Leadership</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="experience-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3 data-translate="exp1-title">TCS Japan Collaboration</h3>
+                            <span class="timeline-date" data-translate="exp1-date">Oct - Nov 2023</span>
+                        </div>
+                        <h4 data-translate="exp1-position">IoT Systems Development Intern</h4>
+                        <p data-translate="exp1-description">Developed Digital Smart Lock System with IoT integration, implementing multi-factor authentication and optimizing hardware-software performance under TCS mentorship.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3 data-translate="exp2-title">NexSeed Venture Capital Club</h3>
+                            <span class="timeline-date" data-translate="exp2-date">2023 - 2024</span>
+                        </div>
+                        <h4 data-translate="exp2-position">Head & Founder</h4>
+                        <p data-translate="exp2-description">Led club growth by 25%, organized industry workshops, coordinated pitch competitions, and established partnerships with local startups and VC firms for mentorship opportunities.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3 data-translate="exp3-title">Aerospace Club VIT</h3>
+                            <span class="timeline-date" data-translate="exp3-date">2022 - 2024</span>
+                        </div>
+                        <h4 data-translate="exp3-position">Core Member</h4>
+                        <p data-translate="exp3-description">Collaborated on drone design and development, conducted testing sessions, and contributed to technical documentation while enhancing teamwork and communication skills.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-translate="contact-title">Let's Work Together</h2>
+                <div class="section-line"></div>
+                <p class="section-subtitle" data-translate="contact-subtitle">Ready to bring innovative ideas to life</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4 data-translate="contact-email-label">Email</h4>
+                            <p>bipra.biswas309@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4 data-translate="contact-phone-label">Phone</h4>
+                            <p>+81 80-7074-5577</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4 data-translate="contact-location-label">Location</h4>
+                            <p data-translate="contact-location-value">Japan (Permanent Resident)</p>
+                        </div>
+                    </div>
+                    <div class="contact-social">
+                        <a href="https://linkedin.com/in/bipra-biswas-b1a1b727a" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Bipra09" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:bipra.biswas309@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" data-translate-placeholder="form-name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" data-translate-placeholder="form-email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" placeholder="Subject" data-translate-placeholder="form-subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" data-translate-placeholder="form-message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-translate="send-message">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Online Mode Modal -->
+    <div id="online-mode-modal" class="online-mode-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="modal-title">AI Mode Configuration</h2>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="mode-section">
+                    <h3><i class="fas fa-wifi"></i> <span data-translate="online-mode-title">Online Mode</span></h3>
+                    <p data-translate="online-mode-desc">Friday AI connects to external AI services:</p>
+                    <ul>
+                        <li data-translate="online-feature-1">Backend server with advanced AI models</li>
+                        <li data-translate="online-feature-2">Hugging Face Gamma AI integration</li>
+                        <li data-translate="online-feature-3">Real-time AI processing and responses</li>
+                        <li data-translate="online-feature-4">Enhanced conversational capabilities</li>
+                        <li data-translate="online-feature-5">Access to latest AI knowledge</li>
+                    </ul>
+                    <div class="mode-status">
+                        <span class="status-label" data-translate="current-status">Current Status:</span>
+                        <span class="status-value" id="online-status" data-translate="status-inactive">Disconnected</span>
+                    </div>
+                </div>
+
+                <div class="mode-section">
+                    <h3><i class="fas fa-wifi-slash"></i> <span data-translate="offline-mode-title">Offline Mode</span></h3>
+                    <p data-translate="offline-mode-desc">Friday AI uses local knowledge base only:</p>
+                    <ul>
+                        <li data-translate="offline-feature-1">Local portfolio knowledge database</li>
+                        <li data-translate="offline-feature-2">Instant responses without internet</li>
+                        <li data-translate="offline-feature-3">Privacy-focused local processing</li>
+                        <li data-translate="offline-feature-4">No external API dependencies</li>
+                        <li data-translate="offline-feature-5">Consistent availability</li>
+                    </ul>
+                    <div class="mode-status">
+                        <span class="status-label" data-translate="current-status">Current Status:</span>
+                        <span class="status-value" id="offline-status" data-translate="status-active">Active</span>
+                    </div>
+                </div>
+
+                <div class="configuration-section">
+                    <h3><i class="fas fa-cog"></i> <span data-translate="config-title">How to Configure</span></h3>
+                    <div class="config-steps">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <p data-translate="step-1">Click the "Online Mode" button in the hero section</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <p data-translate="step-2">Choose your preferred AI mode (Online/Offline)</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <p data-translate="step-3">Friday AI will automatically switch modes</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <p data-translate="step-4">Visual indicators will show current mode status</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mode-toggle-section">
+                    <h3 data-translate="switch-title">Switch AI Mode</h3>
+                    <div class="toggle-buttons">
+                        <button class="mode-toggle-btn online" id="switch-online">
+                            <i class="fas fa-wifi"></i>
+                            <span data-translate="enable-online">Enable Online Mode</span>
+                        </button>
+                        <button class="mode-toggle-btn offline" id="switch-offline">
+                            <i class="fas fa-wifi-slash"></i>
+                            <span data-translate="enable-offline">Enable Offline Mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="back-to-portfolio" id="back-to-portfolio">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back-to-portfolio">Back to Portfolio</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p data-translate="footer-text">&copy; 2025 Bipra Biswas. Crafted with passion and code.</p>
+            </div>
+        </div>
+    </footer>
+
+<!-- Friday AI Orb & Panel -->
+<div class="friday-orb-container">
+  <div class="friday-orb" id="friday-ai-button">
+    <div class="orb-face">
+      <div class="ai-eyes">
+        <div class="ai-eye left">
+          <div class="eye-pupil"></div>
+          <div class="eye-glow"></div>
+          <div class="eye-iris"></div>
+        </div>
+        <div class="ai-eye right">
+          <div class="eye-pupil"></div>
+          <div class="eye-glow"></div>
+          <div class="eye-iris"></div>
+        </div>
+      </div>
+      <div class="ai-mouth">
+        <div class="mouth-line"></div>
+        <div class="mouth-expression"></div>
+      </div>
+      <div class="ai-cheeks">
+        <div class="cheek left"></div>
+        <div class="cheek right"></div>
+      </div>
+    </div>
+    <div class="orb-status-lights">
+      <div class="status-light power"></div>
+      <div class="status-light processing"></div>
+      <div class="status-light listening"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Friday AI Chat Container -->
+<div class="friday-chat-interface" id="friday-chat-container">
+  <div class="friday-header">
+    <div class="friday-avatar">🤖</div>
+    <div class="title">F.R.I.D.A.Y</div>
+    <button class="friday-close" id="friday-close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="friday-messages" id="friday-messages">
+    <div class="friday-message friday-ai-message">
+      <div class="friday-avatar-small">🤖</div>
+      <div class="message-content">
+        <div class="message-text">Hello! I'm Friday, your AI assistant. How can I help you today?</div>
+        <div class="message-timestamp">Just now</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="friday-input-container">
+    <input type="text" 
+           id="friday-input" 
+           placeholder="Type your message here..."
+           maxlength="500">
+    <div class="friday-controls">
+      <button class="friday-btn friday-voice" 
+              id="friday-voice" 
+              title="Voice Input">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="friday-btn friday-speak" 
+              id="friday-speak" 
+              title="Text to Speech">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button class="friday-btn friday-send" 
+              id="friday-send" 
+              title="Send Message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+  
+
+</div>
+
+
+
+
+
+    <script src="script.js"></script>
+    <script src="friday-ai-config.js"></script>
+    <script src="friday-ai-enhanced.js"></script>
+    
+    <!-- Remove duplicate Friday AI scripts to prevent conflicts -->
+    <!-- <script src="friday-ai-advanced.js"></script> -->
+    <!-- <script src="friday-ai-simple.js"></script> -->
+    
+    <!-- Simple Friday AI Initialization -->
+    <script>
+        // Wait for everything to load
+        window.addEventListener('load', function() {
+            console.log('🌐 Page fully loaded, initializing Friday AI...');
+            
+            // Ensure chat starts hidden
+            const chatContainer = document.getElementById('friday-chat-container');
+            if (chatContainer) {
+                chatContainer.style.display = 'none';
+                chatContainer.classList.remove('active');
+                console.log('✅ Chat container hidden on page load');
+            }
+        });
+    </script>
+</body>
+</html>
