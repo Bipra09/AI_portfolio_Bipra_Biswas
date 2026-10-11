@@ -173,7 +173,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by Bipra Biswas**
+## Author 👨‍💻
+
+- [Bipra_Biswas](https://github.com/Bipra09)
 
 *Fullstack Developer & AI Enthusiast*
 =======
